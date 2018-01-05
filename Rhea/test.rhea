@@ -1,0 +1,5 @@
+﻿fun main(argc : int32) -> void {
+}
+
+fun hello(x : int64, y : float32, z : bool) -> int64 {
+}
