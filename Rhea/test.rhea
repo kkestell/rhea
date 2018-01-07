@@ -1,5 +1,6 @@
-﻿fun main(argc : int32) -> void {
-}
-
-fun hello(x : int64, y : float32, z : bool) -> int64 {
+﻿fun main() -> int {
+  var x : int = 0
+  var y : ^int = &x
+  var s : string = "hello world"
+  return "hello"
 }

@@ -16,31 +16,65 @@ argument
     : name ':' type
     ;
 
+
 block
-    : '{' expression* '}'
+    : '{' statement* '}'
     ;
+
+statement
+	: variableInitialization
+    | variableDeclaration
+	| returnStatement
+	;
 
 expression
-    : '(' expression ')'
-    | assignment
-    | ID
-    | INTEGER
+    : name
+    | literal
     ;
 
-assignment
-    : name '=' expression
+returnStatement
+	: 'return' expression
+	;
+
+variableInitialization
+	: 'var' name ':' type '=' expression
+	;
+
+variableDeclaration
+	: 'var' name ':' type
+	;
+
+literal
+	: integerLiteral
+	| stringLiteral
+	;
+
+stringLiteral
+	: STRING
+	;
+
+STRING
+    : '"' (ESC | ~('\\'|'"'))* '"'
+    ;
+
+ESC
+    : '\\' ('n' | 'r')
+    ;
+
+integerLiteral
+    : INTEGER
     ;
 
 name
-	: ID
-	;
+    : '&'? ID
+    ;
 
 type
-	: ID
-	;
+    : '^'? ID
+    ;
 
 ID
-    : [a-z][a-z0-9]*
+    : [a-zA-Z][a-zA-Z0-9]*
     ;
 
 INTEGER
