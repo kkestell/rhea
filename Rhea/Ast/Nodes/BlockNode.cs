@@ -5,7 +5,7 @@ namespace Rhea.Ast.Nodes
 {
     class BlockNode : Node
     {
-        public List<StatementNode> Statements { get; } = new List<StatementNode>();
+        public IEnumerable<StatementNode> Statements { get; set; }
 
         public override string ToString()
         {

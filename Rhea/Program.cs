@@ -29,7 +29,7 @@ namespace Rhea
             var astBuilder = new AstBuilder();
             ParseTreeWalker.Default.Walk(astBuilder, tree);
 
-            var program = astBuilder.Program.ToString();
+            var program = astBuilder.ToString();
 
             File.WriteAllText(outputFilename, program);
 

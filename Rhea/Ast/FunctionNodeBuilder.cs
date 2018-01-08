@@ -1,4 +1,5 @@
-﻿using Antlr4.Runtime.Misc;
+﻿using System.Linq;
+using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Rhea.Ast.Nodes;
 
@@ -30,10 +31,10 @@ namespace Rhea.Ast
 
         public override void EnterBlock([NotNull] RheaParser.BlockContext context)
         {
-            var builder = new BlockNodeBuilder();
-            ParseTreeWalker.Default.Walk(builder, context);
-
-            Function.Block = builder.Block;
+            Function.Block = new BlockNode
+            {
+                Statements = context._statements.Select(s => new StatementNodeBuilder().Visit(s))
+            };
         }
     }
 }

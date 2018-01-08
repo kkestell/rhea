@@ -1,81 +1,10 @@
 ﻿using Antlr4.Runtime.Misc;
-using Antlr4.Runtime.Tree;
 using Rhea.Ast.Nodes;
 using System;
 using System.Globalization;
 
 namespace Rhea.Ast
 {
-    class NumberNode : AtomNode
-    {
-        public double Value { get; set; }
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
-    }
-
-    class VariableNode : AtomNode
-    {
-        public string Name { get; set; }
-
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
-
-    class UnaryExpressionNode : ExpressionNode
-    {
-        public ExpressionNode Expression { get; set; }
-
-        public override string ToString()
-        {
-            return $"({Expression})";
-        }
-    }
-
-    class UnaryNegationExpressionNode : UnaryExpressionNode
-    {
-        public override string ToString()
-        {
-            return $"(-{Expression})";
-        }
-    }
-
-    class AdditionNode : InfixExpressionNode
-    {
-        public override string ToString()
-        {
-            return $"({Left} + {Right})";
-        }
-    }
-
-    class SubtractionNode : InfixExpressionNode
-    {
-        public override string ToString()
-        {
-            return $"({Left} - {Right})";
-        }
-    }
-
-    class MultiplicationNode : InfixExpressionNode
-    {
-        public override string ToString()
-        {
-            return $"({Left} * {Right})";
-        }
-    }
-
-    class DivisionNode : InfixExpressionNode
-    {
-        public override string ToString()
-        {
-            return $"({Left} / {Right})";
-        }
-    }
-
     class ExpressionNodeBuilder : RheaBaseVisitor<ExpressionNode>
     {
         public override ExpressionNode VisitNumber([NotNull] RheaParser.NumberContext context)

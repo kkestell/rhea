@@ -48,9 +48,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ast\Nodes\AdditionNode.cs" />
     <Compile Include="Ast\AstBuilder.cs" />
-    <Compile Include="Ast\BlockNodeBuilder.cs" />
+    <Compile Include="Ast\Nodes\DivisionNode.cs" />
     <Compile Include="Ast\ExpressionNodeBuilder.cs" />
+    <Compile Include="Ast\Nodes\MultiplicationNode.cs" />
     <Compile Include="Ast\Nodes\InfixExpressionNode.cs" />
     <Compile Include="Ast\Nodes\AtomNode.cs" />
     <Compile Include="Ast\Nodes\FunctionArgumentNode.cs" />
@@ -65,8 +67,13 @@
     <Compile Include="Ast\Nodes\TypeNode.cs" />
     <Compile Include="Ast\Nodes\VariableDeclarationNode.cs" />
     <Compile Include="Ast\Nodes\VariableInitializationNode.cs" />
+    <Compile Include="Ast\Nodes\NumberNode.cs" />
     <Compile Include="Ast\StatementNodeBuilder.cs" />
+    <Compile Include="Ast\Nodes\SubtractionNode.cs" />
+    <Compile Include="Ast\Nodes\UnaryExpressionNode.cs" />
+    <Compile Include="Ast\Nodes\UnaryNegationExpressionNode.cs" />
     <Compile Include="Ast\VariableInitializationNodeBuilder.cs" />
+    <Compile Include="Ast\Nodes\VariableNode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rhea.g4.lexer.cs">

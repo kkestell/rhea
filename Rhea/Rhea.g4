@@ -17,21 +17,21 @@ argument
     ;
 
 block
-    : '{' statement* '}'
+    : '{' statements+=statement* '}'
     ;
 
 statement
-	: variableInitialization
-    | variableDeclaration
-	| returnStatement
+    : 'var' name ':' type '=' expression # variableInitialization
+	| 'var' name ':' type # variableDeclaration
+	| 'return' expression # returnStatement
 	;
 
 expression
-   : '(' expression ')'                              # parensExpression
-   | op=('+' | '-') expression                       # unaryExpression
+   : '(' expression ')' # parensExpression
+   | op=('+' | '-') expression # unaryExpression
    | left=expression op=('*' | '/') right=expression # infixExpression
    | left=expression op=('+' | '-') right=expression # infixExpression
-   | value=atom                                      # valueExpression
+   | value=atom # valueExpression
    ;
 
 atom
@@ -47,20 +47,8 @@ variable
    : value=ID
    ;
 
-returnStatement
-	: 'return' expression
-	;
-
-variableInitialization
-	: 'var' name ':' type '=' expression
-	;
-
-variableDeclaration
-	: 'var' name ':' type
-	;
-
 STRING
-    : '"' (ESC | ~('\\'|'"'))* '"'
+    : '"' (ESC | ~( '\\' | '"' ))* '"'
     ;
 
 ESC
@@ -117,26 +105,6 @@ OP_MUL
 
 OP_DIV
    : '/'
-   ;
-
-GT
-   : '>'
-   ;
-
-LT
-   : '<'
-   ;
-
-EQ
-   : '='
-   ;
-
-POINT
-   : '.'
-   ;
-
-POW
-   : '^'
    ;
 
 WS

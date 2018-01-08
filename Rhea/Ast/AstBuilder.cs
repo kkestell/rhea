@@ -4,9 +4,9 @@ using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    class AstBuilder : RheaBaseListener
+    public class AstBuilder : RheaBaseListener
     {
-        public ProgramNode Program { get; } = new ProgramNode();
+        ProgramNode Program { get; } = new ProgramNode();
 
         public override void EnterFunction([NotNull] RheaParser.FunctionContext context)
         {
@@ -14,6 +14,11 @@ namespace Rhea.Ast
             ParseTreeWalker.Default.Walk(builder, context);
 
             Program.Functions.Add(builder.Function);
+        }
+
+        public override string ToString()
+        {
+            return Program.ToString();
         }
     }
 }

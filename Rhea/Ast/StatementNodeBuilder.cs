@@ -1,36 +1,33 @@
-﻿using Antlr4.Runtime.Tree;
-using Rhea.Ast.Nodes;
+﻿using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    class StatementNodeBuilder : RheaBaseListener
+    class StatementNodeBuilder : RheaBaseVisitor<StatementNode>
     {
-        public StatementNode Statement { get; private set; }
-
-        public override void EnterVariableDeclaration(RheaParser.VariableDeclarationContext context)
+        public override StatementNode VisitVariableDeclaration(RheaParser.VariableDeclarationContext context)
         {
-            Statement = new VariableDeclarationNode
+            return new VariableDeclarationNode
             {
                 Name = context.name().GetText(),
                 Type = new TypeNode(context.type().GetText())
             };
         }
 
-        public override void EnterVariableInitialization(RheaParser.VariableInitializationContext context)
+        public override StatementNode VisitVariableInitialization(RheaParser.VariableInitializationContext context)
         {
-            var builder = new VariableInitializationNodeBuilder();
-            ParseTreeWalker.Default.Walk(builder, context);
-
-            Statement = builder.VariableInitialization;
+            return new VariableInitializationNode
+            {
+                Name = context.name().GetText(),
+                Type = new TypeNode(context.type().GetText()),
+                Expression = new ExpressionNodeBuilder().Visit(context.expression())
+            };
         }
 
-        public override void EnterReturnStatement(RheaParser.ReturnStatementContext context)
+        public override StatementNode VisitReturnStatement(RheaParser.ReturnStatementContext context)
         {
-            var builder = new ExpressionNodeBuilder();
-
-            Statement = new ReturnStatementNode
+            return new ReturnStatementNode
             {
-                Expression = builder.Visit(context.expression())
+                Expression = new ExpressionNodeBuilder().Visit(context.expression())
             };
         }
     }
