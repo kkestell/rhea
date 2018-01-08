@@ -16,7 +16,6 @@ argument
     : name ':' type
     ;
 
-
 block
     : '{' statement* '}'
     ;
@@ -28,9 +27,25 @@ statement
 	;
 
 expression
-    : name
-    | literal
-    ;
+   : '(' expression ')'                              # parensExpression
+   | op=('+' | '-') expression                       # unaryExpression
+   | left=expression op=('*' | '/') right=expression # infixExpression
+   | left=expression op=('+' | '-') right=expression # infixExpression
+   | value=atom                                      # valueExpression
+   ;
+
+atom
+   : number
+   | variable
+   ;
+
+number
+   : value=SCIENTIFIC_NUMBER
+   ;
+
+variable
+   : value=ID
+   ;
 
 returnStatement
 	: 'return' expression
@@ -44,25 +59,12 @@ variableDeclaration
 	: 'var' name ':' type
 	;
 
-literal
-	: integerLiteral
-	| stringLiteral
-	;
-
-stringLiteral
-	: STRING
-	;
-
 STRING
     : '"' (ESC | ~('\\'|'"'))* '"'
     ;
 
 ESC
     : '\\' ('n' | 'r')
-    ;
-
-integerLiteral
-    : INTEGER
     ;
 
 name
@@ -77,9 +79,65 @@ ID
     : [a-zA-Z][a-zA-Z0-9]*
     ;
 
-INTEGER
-    : [0-9]+
-    ;
+SCIENTIFIC_NUMBER
+   : NUMBER (E SIGN? NUMBER)?
+   ;
+
+fragment NUMBER
+   : ('0' .. '9') + ('.' ('0' .. '9') +)?
+   ;
+
+fragment E
+   : 'E' | 'e'
+   ;
+
+fragment SIGN
+   : ('+' | '-')
+   ;
+
+LPAREN
+   : '('
+   ;
+
+RPAREN
+   : ')'
+   ;
+
+OP_ADD
+   : '+'
+   ;
+
+OP_SUB
+   : '-'
+   ;
+
+OP_MUL
+   : '*'
+   ;
+
+OP_DIV
+   : '/'
+   ;
+
+GT
+   : '>'
+   ;
+
+LT
+   : '<'
+   ;
+
+EQ
+   : '='
+   ;
+
+POINT
+   : '.'
+   ;
+
+POW
+   : '^'
+   ;
 
 WS
     : [ \t\r\n]+ -> skip

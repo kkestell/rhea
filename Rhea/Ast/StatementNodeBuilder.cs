@@ -26,10 +26,12 @@ namespace Rhea.Ast
 
         public override void EnterReturnStatement(RheaParser.ReturnStatementContext context)
         {
-            var builder = new ReturnStatementNodeBuilder();
-            ParseTreeWalker.Default.Walk(builder, context);
+            var builder = new ExpressionNodeBuilder();
 
-            Statement = builder.ReturnStatement;
+            Statement = new ReturnStatementNode
+            {
+                Expression = builder.Visit(context.expression())
+            };
         }
     }
 }

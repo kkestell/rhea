@@ -51,24 +51,20 @@
     <Compile Include="Ast\AstBuilder.cs" />
     <Compile Include="Ast\BlockNodeBuilder.cs" />
     <Compile Include="Ast\ExpressionNodeBuilder.cs" />
+    <Compile Include="Ast\Nodes\InfixExpressionNode.cs" />
+    <Compile Include="Ast\Nodes\AtomNode.cs" />
     <Compile Include="Ast\Nodes\FunctionArgumentNode.cs" />
     <Compile Include="Ast\FunctionNodeBuilder.cs" />
-    <Compile Include="Ast\LiteralExpressionNodeBuilder.cs" />
     <Compile Include="Ast\Nodes\BlockNode.cs" />
     <Compile Include="Ast\Nodes\ExpressionNode.cs" />
     <Compile Include="Ast\Nodes\FunctionNode.cs" />
-    <Compile Include="Ast\Nodes\IntegerLiteralExpressionNode.cs" />
-    <Compile Include="Ast\Nodes\LiteralExpressionNode.cs" />
-    <Compile Include="Ast\Nodes\NameExpressionNode.cs" />
     <Compile Include="Ast\Nodes\Node.cs" />
     <Compile Include="Ast\Nodes\ProgramNode.cs" />
     <Compile Include="Ast\Nodes\ReturnStatementNode.cs" />
     <Compile Include="Ast\Nodes\StatementNode.cs" />
-    <Compile Include="Ast\Nodes\StringLiteralNode.cs" />
     <Compile Include="Ast\Nodes\TypeNode.cs" />
     <Compile Include="Ast\Nodes\VariableDeclarationNode.cs" />
     <Compile Include="Ast\Nodes\VariableInitializationNode.cs" />
-    <Compile Include="Ast\ReturnStatementNodeBuilder.cs" />
     <Compile Include="Ast\StatementNodeBuilder.cs" />
     <Compile Include="Ast\VariableInitializationNodeBuilder.cs" />
     <Compile Include="Program.cs" />
@@ -86,7 +82,7 @@
     <Antlr4 Include="Rhea.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>Rhea</CustomToolNamespace>
-      <Visitor>False</Visitor>
+      <Visitor>True</Visitor>
     </Antlr4>
     <None Include="test.rhea">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

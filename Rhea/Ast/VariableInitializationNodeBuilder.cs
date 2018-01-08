@@ -19,9 +19,7 @@ namespace Rhea.Ast
         public override void EnterExpression(RheaParser.ExpressionContext context)
         {
             var builder = new ExpressionNodeBuilder();
-            ParseTreeWalker.Default.Walk(builder, context);
-
-            VariableInitialization.Expression = builder.Expression;
+            VariableInitialization.Expression = builder.Visit(context);
         }
     }
 }
