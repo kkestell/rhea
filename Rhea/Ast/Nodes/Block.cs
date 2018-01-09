@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
-    class BlockNode : Node
+    class Block : Node
     {
-        public IEnumerable<StatementNode> Statements { get; set; }
+        public IEnumerable<Statement> Statements { get; set; }
 
         public override string ToString()
         {

@@ -2,9 +2,9 @@
 
 namespace Rhea.Ast
 {
-    class UnaryExpressionNode : ExpressionNode
+    class UnaryExpression : Expression
     {
-        public ExpressionNode Expression { get; set; }
+        public Expression Expression { get; set; }
 
         public override string ToString()
         {

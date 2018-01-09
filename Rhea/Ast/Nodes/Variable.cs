@@ -2,11 +2,13 @@
 
 namespace Rhea.Ast
 {
-    class AdditionNode : InfixExpressionNode
+    class Variable : Atom
     {
+        public string Name { get; set; }
+
         public override string ToString()
         {
-            return $"({Left} + {Right})";
+            return Name;
         }
     }
 }

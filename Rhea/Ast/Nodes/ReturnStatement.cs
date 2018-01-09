@@ -1,8 +1,8 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    class ReturnStatementNode : StatementNode
+    class ReturnStatement : Statement
     {
-        public ExpressionNode Expression { get; set; }
+        public Expression Expression { get; set; }
 
         public override string ToString()
         {

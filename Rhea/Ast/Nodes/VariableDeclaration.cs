@@ -1,9 +1,9 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    class VariableDeclarationNode : StatementNode
+    class VariableDeclaration : Statement
     {
         public string Name { get; set; }
-        public TypeNode Type { get; set; }
+        public Type Type { get; set; }
 
         public override string ToString()
         {

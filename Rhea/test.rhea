@@ -1,5 +1,7 @@
 ﻿fun main() -> int {
-  var x : int = 6
-  var r : int = 10e5 + 5 - x
-  return 3.14159 / (r + -2)
+  return foo()
+}
+
+fun foo() -> int {
+  return 0
 }

@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast
 {
-    class DivisionNode : InfixExpressionNode
+    class Division : InfixExpression
     {
         public override string ToString()
         {

@@ -5,14 +5,14 @@ program
     ;
 
 function
-    : 'fun' name '(' argumentList ')' '->' type block
+    : 'fun' name '(' parameterList ')' '->' type block
     ;
 
-argumentList
-    : argument? | argumentList ',' argument
+parameterList
+    : parameter? | parameterList ',' parameter
     ;
 
-argument
+parameter
     : name ':' type
     ;
 
@@ -24,6 +24,7 @@ statement
     : 'var' name ':' type '=' expression # variableInitialization
 	| 'var' name ':' type # variableDeclaration
 	| 'return' expression # returnStatement
+	| 'if' '(' expression ')' block # ifStatement
 	;
 
 expression
@@ -31,8 +32,18 @@ expression
    | op=('+' | '-') expression # unaryExpression
    | left=expression op=('*' | '/') right=expression # infixExpression
    | left=expression op=('+' | '-') right=expression # infixExpression
+   | left=expression op=('==' | '!=') right=expression # infixExpression
+   | functionName=ID '(' arguments=argumentList ')' # functionCall
    | value=atom # valueExpression
    ;
+
+argumentList
+    : argument? | argumentList ',' argument
+    ;
+
+argument
+    : expression
+    ;
 
 atom
    : number
@@ -104,9 +115,12 @@ OP_MUL
    ;
 
 OP_DIV
-   : '/'
-   ;
+	: '/'
+	;
 
+OP_EQ
+	: '=='
+	;
 WS
     : [ \t\r\n]+ -> skip
     ;

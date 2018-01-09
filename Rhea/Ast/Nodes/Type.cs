@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rhea.Ast.Nodes
+﻿namespace Rhea.Ast.Nodes
 {
-    class TypeNode : Node
+    class Type : Node
     {
         public string Value { get; set; }
         public bool Pointer { get; set; }
 
-        public TypeNode(string type)
+        public Type(string type)
         {
             if (type.StartsWith("^"))
             {

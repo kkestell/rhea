@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    abstract class StatementNode : Node
+    abstract class Expression : Statement
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast
 {
-    class NumberNode : AtomNode
+    class Number : Atom
     {
         public double Value { get; set; }
 

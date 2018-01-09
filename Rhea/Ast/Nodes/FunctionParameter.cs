@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast
 {
-    class FunctionArgumentNode : Node
+    class FunctionParameter : Node
     {
         public string Name { get; set; }
         public string Type { get; set; }

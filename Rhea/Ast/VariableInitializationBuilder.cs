@@ -1,24 +1,23 @@
-﻿using Antlr4.Runtime.Tree;
-using Rhea.Ast.Nodes;
+﻿using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    class VariableInitializationNodeBuilder : RheaBaseListener
+    class VariableInitializationBuilder : RheaBaseListener
     {
-        public VariableInitializationNode VariableInitialization { get; set; }
+        public VariableInitialization VariableInitialization { get; set; }
 
         public override void EnterVariableInitialization(RheaParser.VariableInitializationContext context)
         {
-            VariableInitialization = new VariableInitializationNode
+            VariableInitialization = new VariableInitialization
             {
                 Name = context.name().GetText(),
-                Type = new TypeNode(context.type().GetText())
+                Type = new Type(context.type().GetText())
             };
         }
 
         public override void EnterExpression(RheaParser.ExpressionContext context)
         {
-            var builder = new ExpressionNodeBuilder();
+            var builder = new ExpressionBuilder();
             VariableInitialization.Expression = builder.Visit(context);
         }
     }

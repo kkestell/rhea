@@ -6,11 +6,11 @@ namespace Rhea.Ast
 {
     public class AstBuilder : RheaBaseListener
     {
-        ProgramNode Program { get; } = new ProgramNode();
+        Nodes.Program Program { get; } = new Nodes.Program();
 
         public override void EnterFunction([NotNull] RheaParser.FunctionContext context)
         {
-            var builder = new FunctionNodeBuilder();
+            var builder = new FunctionBuilder();
             ParseTreeWalker.Default.Walk(builder, context);
 
             Program.Functions.Add(builder.Function);

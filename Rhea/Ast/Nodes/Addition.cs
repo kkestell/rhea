@@ -2,11 +2,11 @@
 
 namespace Rhea.Ast
 {
-    class SubtractionNode : InfixExpressionNode
+    class Addition : InfixExpression
     {
         public override string ToString()
         {
-            return $"({Left} - {Right})";
+            return $"({Left} + {Right})";
         }
     }
 }

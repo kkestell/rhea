@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast
 {
-    class UnaryNegationExpressionNode : UnaryExpressionNode
+    class UnaryNegation : UnaryExpression
     {
         public override string ToString()
         {

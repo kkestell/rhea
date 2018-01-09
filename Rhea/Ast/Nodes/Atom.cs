@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rhea.Ast.Nodes
 {
-    abstract class AtomNode : ExpressionNode
+    abstract class Atom : Expression
     {
     }
 }
