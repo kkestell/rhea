@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
-    class Program : Node
+    public class Program : Node
     {
         public List<FunctionNode> Functions { get; set; } = new List<FunctionNode>();
 
         public override string ToString()
         {
-            var standardIncludes = new string[]
+            var standardIncludes = new[]
             {
                 "stdbool",
                 "stdint",

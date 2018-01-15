@@ -3,12 +3,20 @@ using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    class StatementBuilder : RheaBaseVisitor<Statement>
+    internal class StatementBuilder : RheaBaseVisitor<Statement>
     {
+        Block Scope { get; }
+
+        public StatementBuilder(Block scope)
+        {
+            Scope = scope;
+        }
+
         public override Statement VisitVariableDeclaration(RheaParser.VariableDeclarationContext context)
         {
             return new VariableDeclaration
             {
+                Scope = Scope,
                 Name = context.name().GetText(),
                 Type = new Type(context.type().GetText())
             };
@@ -18,29 +26,42 @@ namespace Rhea.Ast
         {
             return new VariableInitialization
             {
+                Scope = Scope,
                 Name = context.name().GetText(),
                 Type = new Type(context.type().GetText()),
-                Expression = new ExpressionBuilder().Visit(context.expression())
+                Expression = new ExpressionBuilder(Scope).Visit(context.expression())
             };
         }
 
         public override Statement VisitReturnStatement(RheaParser.ReturnStatementContext context)
         {
-            return new ReturnStatement
+            var returnStatement = new ReturnStatement
             {
-                Expression = new ExpressionBuilder().Visit(context.expression())
+                Scope = Scope
             };
+
+            if (context.expression() != null)
+            {
+                returnStatement.Expression = new ExpressionBuilder(Scope).Visit(context.expression());
+            }
+
+            return returnStatement;
         }
 
         public override Statement VisitIfStatement(RheaParser.IfStatementContext context)
         {
+            var newBlock = new Block
+            {
+                Scope = Scope
+            };
+
+           newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock).Visit(s));
+            
             return new IfStatement
             {
-                Expression = new ExpressionBuilder().Visit(context.expression()),
-                Block = new Block
-                {
-                    Statements = context.block()._statements.Select(s => new StatementBuilder().Visit(s))
-                }
+                Scope = Scope,
+                Expression = new ExpressionBuilder(Scope).Visit(context.expression()),
+                Block = newBlock
             };
         }
     }

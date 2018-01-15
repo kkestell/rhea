@@ -1,6 +1,7 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    abstract class Statement : Node
+    public abstract class Statement : Node
     {
+        public Block Scope { get; set; }
     }
 }

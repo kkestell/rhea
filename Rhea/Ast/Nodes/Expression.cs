@@ -1,6 +1,9 @@
-﻿namespace Rhea.Ast.Nodes
+﻿using System;
+
+namespace Rhea.Ast.Nodes
 {
-    abstract class Expression : Statement
+    public abstract class Expression : Statement
     {
+        public abstract Type InferredType { get; }
     }
 }

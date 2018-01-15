@@ -23,7 +23,7 @@ block
 statement
     : 'var' name ':' type '=' expression # variableInitialization
 	| 'var' name ':' type # variableDeclaration
-	| 'return' expression # returnStatement
+	| 'return' expression? # returnStatement
 	| 'if' '(' expression ')' block # ifStatement
 	;
 
@@ -33,6 +33,7 @@ expression
    | left=expression op=('*' | '/') right=expression # infixExpression
    | left=expression op=('+' | '-') right=expression # infixExpression
    | left=expression op=('==' | '!=') right=expression # infixExpression
+   | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')' # numberWithPrecision
    | functionName=ID '(' arguments=argumentList ')' # functionCall
    | value=atom # valueExpression
    ;
@@ -71,7 +72,12 @@ name
     ;
 
 type
-    : '^'? ID
+    : '^'? (NUMERIC_TYPE | ID)
+    ;
+
+NUMERIC_TYPE
+    : ('uint' | 'int') ('8' | '16' | '32' | '64')
+    | 'float' ('32' | '64')
     ;
 
 ID

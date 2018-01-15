@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
-using Rhea.Ast;
 
 namespace Rhea
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             var sw = new Stopwatch();
             sw.Start();
@@ -18,22 +15,12 @@ namespace Rhea
             var outputFilename = $"{Path.GetFileNameWithoutExtension(inputFilename)}.c";
 
             var src = File.ReadAllText(inputFilename);
-            var input = new AntlrInputStream(src);
 
-            var lexer = new RheaLexer(input);
-            var tokens = new CommonTokenStream(lexer);
+            var output = new Compiler().Compile(src);
 
-            var parser = new RheaParser(tokens);
-            var tree = parser.program();
+            File.WriteAllText(outputFilename, output);
 
-            var astBuilder = new AstBuilder();
-            ParseTreeWalker.Default.Walk(astBuilder, tree);
-
-            var program = astBuilder.ToString();
-
-            File.WriteAllText(outputFilename, program);
-
-            Console.WriteLine(program);
+            Console.WriteLine(output);
 
             sw.Stop();
             Console.WriteLine(sw.Elapsed);

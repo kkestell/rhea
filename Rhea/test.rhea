@@ -1,7 +1,5 @@
-﻿fun main() -> int {
-  return foo()
-}
-
-fun foo() -> int {
-  return 0
+﻿fun foo() -> int64 {
+  var x : int64 = 1
+  var x : int64 = 2
+  return x
 }

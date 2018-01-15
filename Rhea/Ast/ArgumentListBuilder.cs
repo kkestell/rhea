@@ -3,9 +3,16 @@ using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    class ArgumentListBuilder : RheaBaseListener
+    internal class ArgumentListBuilder : RheaBaseListener
     {
+        public Block Scope { get; set; }
+
         public List<Expression> Arguments { get; set; }
+
+        public ArgumentListBuilder(Block scope)
+        {
+            Scope = scope;
+        }
 
         public override void EnterArgumentList(RheaParser.ArgumentListContext context)
         {
@@ -14,7 +21,7 @@ namespace Rhea.Ast
 
         public override void EnterArgument(RheaParser.ArgumentContext context)
         {
-            Arguments.Add(new ExpressionBuilder().Visit(context.expression()));
+            Arguments.Add(new ExpressionBuilder(Scope).Visit(context.expression()));
         }
     }
 }

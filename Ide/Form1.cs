@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,30 +17,23 @@ namespace Ide
 {
     public partial class Form1 : Form
     {
+        Compiler compiler;
+
         public Form1()
         {
             InitializeComponent();
+            compiler = new Compiler();
         }
 
         void Compile()
         {
             try
             {
-                var input = new AntlrInputStream(textBox1.Text);
-
-                var lexer = new RheaLexer(input);
-                var tokens = new CommonTokenStream(lexer);
-
-                var parser = new RheaParser(tokens);
-                var tree = parser.program();
-
-                var astBuilder = new AstBuilder();
-                ParseTreeWalker.Default.Walk(astBuilder, tree);
-
-                textBox2.Text = astBuilder.ToString().Replace("\n", "\r\n");
+                textBox2.Text = compiler.Compile(textBox1.Text).Replace("\n", "\r\n");
             }
             catch (Exception ex)
             {
+                textBox2.Text = ex.Message;
             }
         }
 

@@ -1,12 +1,11 @@
 ﻿using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    public class AstBuilder : RheaBaseListener
+    public class ProgramBuilder : RheaBaseListener
     {
-        Nodes.Program Program { get; } = new Nodes.Program();
+        public Nodes.Program Program { get; } = new Nodes.Program();
 
         public override void EnterFunction([NotNull] RheaParser.FunctionContext context)
         {

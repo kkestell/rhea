@@ -1,10 +1,12 @@
-﻿using Rhea.Ast.Nodes;
+﻿using System;
 
-namespace Rhea.Ast
+namespace Rhea.Ast.Nodes
 {
-    class Variable : Atom
+    public class Variable : Atom
     {
         public string Name { get; set; }
+
+        public override Type InferredType => Scope.FindDeclaration(Name).Type;
 
         public override string ToString()
         {

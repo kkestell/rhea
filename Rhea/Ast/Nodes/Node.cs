@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    abstract class Node
+    public abstract class Node
     {
     }
 }

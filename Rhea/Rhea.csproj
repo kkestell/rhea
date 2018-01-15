@@ -50,7 +50,9 @@
   <ItemGroup>
     <Compile Include="Ast\ArgumentListBuilder.cs" />
     <Compile Include="Ast\Nodes\Addition.cs" />
-    <Compile Include="Ast\AstBuilder.cs" />
+    <Compile Include="Ast\Nodes\ParensExpression.cs" />
+    <Compile Include="Ast\Nodes\Scope.cs" />
+    <Compile Include="Ast\ProgramBuilder.cs" />
     <Compile Include="Ast\Nodes\Division.cs" />
     <Compile Include="Ast\ExpressionBuilder.cs" />
     <Compile Include="Ast\Nodes\FunctionCall.cs" />
@@ -76,8 +78,8 @@
     <Compile Include="Ast\Nodes\Subtraction.cs" />
     <Compile Include="Ast\Nodes\UnaryExpression.cs" />
     <Compile Include="Ast\Nodes\UnaryNegation.cs" />
-    <Compile Include="Ast\VariableInitializationBuilder.cs" />
     <Compile Include="Ast\Nodes\Variable.cs" />
+    <Compile Include="Compiler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rhea.g4.lexer.cs">

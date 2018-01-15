@@ -1,10 +1,18 @@
-﻿using Rhea.Ast.Nodes;
+﻿using System;
 
-namespace Rhea.Ast
+namespace Rhea.Ast.Nodes
 {
-    class UnaryExpression : Expression
+    public class UnaryExpression : Expression
     {
         public Expression Expression { get; set; }
+
+        public override Type InferredType
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public override string ToString()
         {

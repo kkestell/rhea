@@ -1,8 +1,6 @@
-﻿using Rhea.Ast.Nodes;
-
-namespace Rhea.Ast
+﻿namespace Rhea.Ast.Nodes
 {
-    class Multiplication : InfixExpression
+    public class Multiplication : InfixExpression
     {
         public override string ToString()
         {

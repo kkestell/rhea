@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    class VariableDeclaration : Statement
+    public class VariableDeclaration : Statement
     {
         public string Name { get; set; }
         public Type Type { get; set; }

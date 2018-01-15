@@ -1,8 +1,6 @@
-﻿using Rhea.Ast.Nodes;
-
-namespace Rhea.Ast
+﻿namespace Rhea.Ast.Nodes
 {
-    class FunctionParameter : Node
+    public class FunctionParameter : Node
     {
         public string Name { get; set; }
         public string Type { get; set; }
