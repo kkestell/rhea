@@ -85,4 +85,4 @@ Variables are declared using the `var` keyword:
 var x : int64 = 100
 ```
 
-This creates a new variable a in the current scope and initializes it with the result of the expression following the `=`.
+This creates a new variable `x` in the current scope and initializes it with the result of the expression following the `=`.
