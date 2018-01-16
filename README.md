@@ -5,7 +5,7 @@ Rhea is a simple, type safe programming language which compiles to C.
 ## Example
 
 ```
-fun fib(int64 n) -> int64 {
+fun fib(n : int64) -> int64 {
   if(n == 0) {
     return 0
   }
