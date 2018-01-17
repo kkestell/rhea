@@ -30,8 +30,9 @@ statement
 expression
    : '(' expression ')' # parensExpression
    | op=('+' | '-') expression # unaryExpression
-   | left=expression op=('*' | '/') right=expression # infixExpression
+   | left=expression op=('*' | '/' | '%') right=expression # infixExpression
    | left=expression op=('+' | '-') right=expression # infixExpression
+   | left=expression op=('<' | '<=' | '>' | '>=') right=expression # infixExpression
    | left=expression op=('==' | '!=') right=expression # infixExpression
    | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')' # numberWithPrecision
    | functionName=ID '(' arguments=argumentList ')' # functionCall
@@ -47,13 +48,19 @@ argument
     ;
 
 atom
-   : number
-   | variable
-   ;
+	: number
+	| boolean
+	| variable
+	;
 
 number
-   : value=SCIENTIFIC_NUMBER
-   ;
+	: value=SCIENTIFIC_NUMBER
+	;
+
+boolean
+	: 'true' # true
+	| 'false' # false
+	;
 
 variable
    : value=ID
@@ -124,9 +131,34 @@ OP_DIV
 	: '/'
 	;
 
+OP_MOD
+	: '%'
+	;
+
 OP_EQ
 	: '=='
 	;
+
+OP_NE
+	: '!='
+	;
+
+OP_LT
+	: '<'
+	;
+
+OP_LT_EQ
+	: '<='
+	;
+
+OP_GT
+	: '>'
+	;
+
+OP_GT_EQ
+	: '>='
+	;
+
 WS
     : [ \t\r\n]+ -> skip
     ;

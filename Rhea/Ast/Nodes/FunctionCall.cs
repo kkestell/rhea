@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Rhea.Ast.Nodes
 {
@@ -9,13 +8,7 @@ namespace Rhea.Ast.Nodes
 
         public IEnumerable<Expression> Arguments { get; set; }
 
-        public override Type InferredType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public override Type InferredType => Scope.FindFunction(Name).Type;
 
         public override string ToString()
         {

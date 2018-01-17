@@ -5,14 +5,14 @@ namespace Rhea.Ast
 {
     internal class ArgumentListBuilder : RheaBaseListener
     {
-        public Block Scope { get; set; }
-
-        public List<Expression> Arguments { get; set; }
-
         public ArgumentListBuilder(Block scope)
         {
             Scope = scope;
         }
+
+        public Block Scope { get; set; }
+
+        public List<Expression> Arguments { get; set; }
 
         public override void EnterArgumentList(RheaParser.ArgumentListContext context)
         {

@@ -5,12 +5,12 @@ namespace Rhea.Ast
 {
     internal class StatementBuilder : RheaBaseVisitor<Statement>
     {
-        Block Scope { get; }
-
         public StatementBuilder(Block scope)
         {
             Scope = scope;
         }
+
+        private Block Scope { get; }
 
         public override Statement VisitVariableDeclaration(RheaParser.VariableDeclarationContext context)
         {
@@ -41,9 +41,7 @@ namespace Rhea.Ast
             };
 
             if (context.expression() != null)
-            {
                 returnStatement.Expression = new ExpressionBuilder(Scope).Visit(context.expression());
-            }
 
             return returnStatement;
         }
@@ -55,8 +53,8 @@ namespace Rhea.Ast
                 Scope = Scope
             };
 
-           newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock).Visit(s));
-            
+            newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock).Visit(s));
+
             return new IfStatement
             {
                 Scope = Scope,

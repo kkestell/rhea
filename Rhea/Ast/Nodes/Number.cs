@@ -13,7 +13,7 @@ namespace Rhea.Ast.Nodes
 
     public class Int32 : Number
     {
-        public System.Int32 Value { get; set; }
+        public int Value { get; set; }
 
         public override Type InferredType => new Type("int32");
 
@@ -25,7 +25,7 @@ namespace Rhea.Ast.Nodes
 
     public class Int64 : Number
     {
-        public System.Int64 Value { get; set; }
+        public long Value { get; set; }
 
         public override Type InferredType => new Type("int64");
 
@@ -37,7 +37,7 @@ namespace Rhea.Ast.Nodes
 
     public class Float32 : Number
     {
-        public System.Single Value { get; set; }
+        public float Value { get; set; }
 
         public override Type InferredType => new Type("float32");
 
@@ -49,7 +49,7 @@ namespace Rhea.Ast.Nodes
 
     public class Float64 : Number
     {
-        public System.Double Value { get; set; }
+        public double Value { get; set; }
 
         public override Type InferredType => new Type("float64");
 

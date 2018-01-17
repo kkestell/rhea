@@ -9,7 +9,7 @@ namespace Rhea.Ast
 
         public override void EnterFunction([NotNull] RheaParser.FunctionContext context)
         {
-            var builder = new FunctionBuilder();
+            var builder = new FunctionBuilder(Program);
             ParseTreeWalker.Default.Walk(builder, context);
 
             Program.Functions.Add(builder.Function);

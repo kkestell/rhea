@@ -1,5 +1,5 @@
-﻿fun foo() -> int64 {
-  var x : int64 = 1
-  var x : int64 = 2
-  return x
+﻿fun main() -> int64 {
+  if(10 % 2 == 0) {
+    return 0
+  }
 }

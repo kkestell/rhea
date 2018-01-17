@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    class ParensExpression : Expression
+    internal class ParensExpression : Expression
     {
         public Expression Expression { get; set; }
 

@@ -12,7 +12,11 @@ fun fib(n : int64) -> int64 {
   if(n == 1) {
     return 1
   }
-  return fib(n - 1) + fib(n - 2)
+  return fib(n - 2) + fib(n - 1)
+}
+
+fun main() -> int64 {
+  return fib(10)
 }
 ```
 
@@ -29,7 +33,7 @@ Line comments start with `#` and end at the end of the line:
 ### Reserved Words
 
 ```
-fun if return var
+fun if return var true false
 ```
 
 ### Identifiers
@@ -42,14 +46,14 @@ Rhea uses curly braces to define blocks. You can use a block anywhere a statemen
 
 ### Precedence and Associativity
 
-| Precidence | Operator          | Description       | Associates |
-|------------|-------------------|-------------------|------------|
-| 1          | `()`              | Grouping          | Left       |
-| 2          | `-`               | Negate            | Right      |
-| 3          | `*` `/`           | Multiply, Divide  | Left       |
-| 4          | `+` `-`           | Add, Subtract     | Left       |
-| 5          | `<` `<=` `>` `>=` | Comparison        | Left       |
-| 6          | `==` `!=`         | Equals, Not Equal | Left       |
+| Precidence | Operator          | Description              | Associates |
+|------------|-------------------|--------------------------|------------|
+| 1          | `()`              | Grouping                 | Left       |
+| 2          | `-`               | Negate                   | Right      |
+| 3          | `*` `/` `%`       | Multiply, Divide, Modulo | Left       |
+| 4          | `+` `-`           | Add, Subtract            | Left       |
+| 5          | `<` `<=` `>` `>=` | Comparison               | Left       |
+| 6          | `==` `!=`         | Equal, Not Equal         | Left       |
 
 ## Values
 

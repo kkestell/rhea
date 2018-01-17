@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class IfStatement : Scope
+    public class IfStatement : StatementWithBlock
     {
         public Expression Expression { get; set; }
 

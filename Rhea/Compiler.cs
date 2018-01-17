@@ -29,41 +29,33 @@ namespace Rhea
 
                 if (f.Type.Value == "void")
                 {
-                    foreach (var returnStatement in returnStatements)
+                    foreach (var s in returnStatements)
                     {
-                        if (returnStatement.Expression != null)
-                        {
-                            throw new Exception($"Function {f.Name} must return void, but it returns a {returnStatement.Expression.InferredType}.");
-                        }
+                        if (s.Expression != null)
+                            throw new Exception($"Function {f.Name} must return void, but it returns a {s.Expression.InferredType}.");
                     }
                 }
                 else
                 {
                     if (!returnStatements.Any())
-                    {
                         throw new Exception($"Function {f.Name} must return a {f.Type.Value}, but it returns nothing.");
-                    }
 
                     foreach (var s in returnStatements)
                     {
                         if (s.Expression.InferredType != f.Type)
-                        {
-                            throw new Exception($"Function {f.Name} must return a {f.Type.Value}, not a {s.Expression.InferredType}.");
-                        }
+                            throw new Exception($"Function {f.Name} must return a {f.Type.Value}, not a {s.Expression.InferredType.Value}.");
                     }
                 }
             }
 
             foreach (var function in builder.Program.Functions)
             {
-                foreach (var ifStatement in IfStatements(function.Block))
+                foreach (var ifStatement in FindStatements<IfStatement>(function.Block))
                 {
                     var typeName = ifStatement.Expression.InferredType.Value;
 
                     if (typeName != "bool")
-                    {
                         throw new Exception($"Expression must evaluate to a bool, but evaluates to a {typeName}");
-                    }
                 }
             }
 
@@ -78,9 +70,7 @@ namespace Rhea
                         .Where(d => d.Name == variableDeclaration.Name);
 
                     if (duplicateDeclarations.Count() > 1)
-                    {
                         throw new Exception($"Multiple declaration of variable {variableDeclaration.Name}");
-                    }
                 }
             }
 
@@ -93,7 +83,7 @@ namespace Rhea
 
             var scopes = scope
                 .Statements
-                .OfType<Scope>();
+                .OfType<StatementWithBlock>();
 
             foreach (var statement in scopes)
                 childStatements.AddRange(FindStatements<T>(statement.Block));
@@ -106,25 +96,6 @@ namespace Rhea
             returnStatements.AddRange(childStatements);
 
             return returnStatements;
-        }
-
-        IEnumerable<IfStatement> IfStatements(Block scope)
-        {
-            var childStatements = new List<IfStatement>();
-
-            var ifStatements = scope
-                .Statements
-                .OfType<IfStatement>()
-                .ToList();
-
-            foreach (var statement in ifStatements)
-            {
-                childStatements.AddRange(IfStatements(statement.Block));
-            }
-            
-            ifStatements.AddRange(childStatements);
-
-            return ifStatements;
         }
     }
 }

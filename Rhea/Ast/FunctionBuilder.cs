@@ -1,15 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Net.Mime;
+﻿using System.Linq;
 using Antlr4.Runtime.Misc;
 using Rhea.Ast.Nodes;
-using Type = Rhea.Ast.Nodes.Type;
 
 namespace Rhea.Ast
 {
     internal class FunctionBuilder : RheaBaseListener
     {
-        public FunctionNode Function { get; private set; }
+        public Nodes.Program program;
+
+        public FunctionBuilder(Nodes.Program program)
+        {
+            this.program = program;
+        }
+
+        public FunctionDefinition Function { get; private set; }
 
         public override void EnterFunction([NotNull] RheaParser.FunctionContext context)
         {
@@ -22,12 +26,15 @@ namespace Rhea.Ast
 
             block.Statements = statements;
 
-            Function = new FunctionNode
+            Function = new FunctionDefinition
             {
                 Name = name,
                 Type = new Type(type),
-                Block = block
+                Block = block,
+                Program = program
             };
+
+            Function.Block.Parent = Function;
         }
 
         public override void EnterParameter([NotNull] RheaParser.ParameterContext context)
@@ -35,7 +42,7 @@ namespace Rhea.Ast
             var arg = new FunctionParameter
             {
                 Name = context.name().GetText(),
-                Type = context.type().GetText()
+                Type = new Type(context.type().GetText())
             };
 
             Function.Parameters.Add(arg);

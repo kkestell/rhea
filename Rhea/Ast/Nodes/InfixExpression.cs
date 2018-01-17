@@ -9,10 +9,7 @@ namespace Rhea.Ast.Nodes
 
         public override Type InferredType
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { throw new NotImplementedException(); }
         }
     }
 }

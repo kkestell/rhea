@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Rhea.Ast.Nodes
+﻿namespace Rhea.Ast.Nodes
 {
     public class Variable : Atom
     {

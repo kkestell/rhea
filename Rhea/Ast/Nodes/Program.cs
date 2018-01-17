@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
     public class Program : Node
     {
-        public List<FunctionNode> Functions { get; set; } = new List<FunctionNode>();
+        public List<FunctionDefinition> Functions { get; set; } = new List<FunctionDefinition>();
 
         public override string ToString()
         {
@@ -33,6 +34,16 @@ namespace Rhea.Ast.Nodes
                     .Select(f => f.ToString()));
 
             return $"{includeStatements}\n\n{forwardDeclarations}\n\n{functionDefinitions}";
+        }
+
+        public FunctionDefinition FindFunction(string name)
+        {
+            var func = Functions.Where(f => f.Name == name).SingleOrDefault();
+
+            if (func == null)
+                throw new Exception($"Cannot find function {name}");
+
+            return func;
         }
     }
 }

@@ -50,8 +50,17 @@
   <ItemGroup>
     <Compile Include="Ast\ArgumentListBuilder.cs" />
     <Compile Include="Ast\Nodes\Addition.cs" />
+    <Compile Include="Ast\Nodes\False.cs" />
+    <Compile Include="Ast\Nodes\GreaterThan.cs" />
+    <Compile Include="Ast\Nodes\GreaterThanOrEqualTo.cs" />
+    <Compile Include="Ast\Nodes\LessThan.cs" />
+    <Compile Include="Ast\Nodes\LessThanOrEqualTo.cs" />
+    <Compile Include="Ast\Nodes\Modulo.cs" />
     <Compile Include="Ast\Nodes\ParensExpression.cs" />
+    <Compile Include="Ast\Nodes\RelationalInequality.cs" />
     <Compile Include="Ast\Nodes\Scope.cs" />
+    <Compile Include="Ast\Nodes\StatementWithBlock.cs" />
+    <Compile Include="Ast\Nodes\True.cs" />
     <Compile Include="Ast\ProgramBuilder.cs" />
     <Compile Include="Ast\Nodes\Division.cs" />
     <Compile Include="Ast\ExpressionBuilder.cs" />
@@ -64,7 +73,7 @@
     <Compile Include="Ast\FunctionBuilder.cs" />
     <Compile Include="Ast\Nodes\Block.cs" />
     <Compile Include="Ast\Nodes\Expression.cs" />
-    <Compile Include="Ast\Nodes\FunctionNode.cs" />
+    <Compile Include="Ast\Nodes\FunctionDefinition.cs" />
     <Compile Include="Ast\Nodes\Node.cs" />
     <Compile Include="Ast\Nodes\Program.cs" />
     <Compile Include="Ast\Nodes\RelationalEquality.cs" />

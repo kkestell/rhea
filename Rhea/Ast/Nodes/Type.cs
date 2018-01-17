@@ -30,13 +30,40 @@
 
         public override string ToString()
         {
-            if (Value == "string")
-                return "char*";
+            var cType = Value;
+
+            switch (Value)
+            {
+                case "int8":
+                    cType = "int8_t";
+                    break;
+                case "int16":
+                    cType = "int16_t";
+                    break;
+                case "int32":
+                    cType = "int32_t";
+                    break;
+                case "int64":
+                    cType = "int64_t";
+                    break;
+                case "uint8":
+                    cType = "uint8_t";
+                    break;
+                case "uint16":
+                    cType = "uint16_t";
+                    break;
+                case "uint32":
+                    cType = "uint32_t";
+                    break;
+                case "uint64":
+                    cType = "uint64_t";
+                    break;
+            }
 
             if (Pointer)
-                return $"{Value}*";
+                cType = $"{cType}*";
 
-            return Value;
+            return cType;
         }
     }
 }

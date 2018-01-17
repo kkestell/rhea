@@ -3,7 +3,7 @@
     public class FunctionParameter : Node
     {
         public string Name { get; set; }
-        public string Type { get; set; }
+        public Type Type { get; set; }
 
         public override string ToString()
         {

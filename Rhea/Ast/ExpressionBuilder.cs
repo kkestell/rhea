@@ -2,42 +2,40 @@
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Rhea.Ast.Nodes;
+using Int32 = Rhea.Ast.Nodes.Int32;
+using Int64 = Rhea.Ast.Nodes.Int64;
 
 namespace Rhea.Ast
 {
     internal class ExpressionBuilder : RheaBaseVisitor<Expression>
     {
-        public Block Scope { get; set; }
-
         public ExpressionBuilder(Block scope)
         {
             Scope = scope;
         }
 
+        public Block Scope { get; set; }
+
         public override Expression VisitNumber([NotNull] RheaParser.NumberContext context)
         {
             var val = context.value.Text;
 
-            System.Int64 int64;
-            System.Double float64;
-            
-            if (System.Int64.TryParse(val, out int64))
-            {
-                return new Nodes.Int64
+            long int64;
+            double float64;
+
+            if (long.TryParse(val, out int64))
+                return new Int64
                 {
                     Scope = Scope,
                     Value = int64
                 };
-            }
 
-            if (System.Double.TryParse(val, out float64))
-            {
-                return new Nodes.Float64
+            if (double.TryParse(val, out float64))
+                return new Float64
                 {
                     Scope = Scope,
                     Value = float64
                 };
-            }
 
             throw new NotImplementedException();
         }
@@ -50,16 +48,16 @@ namespace Rhea.Ast
             switch (type)
             {
                 case "int32":
-                    return new Nodes.Int32
+                    return new Int32
                     {
                         Scope = Scope,
-                        Value = System.Int32.Parse(value)
+                        Value = int.Parse(value)
                     };
                 case "float32":
-                    return new Nodes.Float32
+                    return new Float32
                     {
                         Scope = Scope,
-                        Value = System.Single.Parse(value)
+                        Value = float.Parse(value)
                     };
                 default:
                     throw new Exception($"Don't know how to make a {type}");
@@ -73,6 +71,16 @@ namespace Rhea.Ast
                 Scope = Scope,
                 Name = context.value.Text
             };
+        }
+
+        public override Expression VisitTrue(RheaParser.TrueContext context)
+        {
+            return new True();
+        }
+
+        public override Expression VisitFalse(RheaParser.FalseContext context)
+        {
+            return new False();
         }
 
         public override Expression VisitParensExpression([NotNull] RheaParser.ParensExpressionContext context)
@@ -137,8 +145,26 @@ namespace Rhea.Ast
                 case RheaLexer.OP_DIV:
                     node = new Division();
                     break;
+                case RheaLexer.OP_MOD:
+                    node = new Modulo();
+                    break;
+                case RheaLexer.OP_LT:
+                    node = new LessThan();
+                    break;
+                case RheaLexer.OP_LT_EQ:
+                    node = new LessThanOrEqualTo();
+                    break;
+                case RheaLexer.OP_GT:
+                    node = new GreaterThan();
+                    break;
+                case RheaLexer.OP_GT_EQ:
+                    node = new GreaterThanOrEqualTo();
+                    break;
                 case RheaLexer.OP_EQ:
                     node = new RelationalEquality();
+                    break;
+                case RheaLexer.OP_NE:
+                    node = new RelationalInequality();
                     break;
                 default:
                     throw new NotSupportedException();

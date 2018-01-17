@@ -1,7 +1,14 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class Scope : Statement
+    public abstract class Scope
     {
-        public Block Block { get; set; }
+        public Scope Parent { get; set; }
+
+        public abstract VariableDeclaration FindDeclaration(string name);
+
+        public virtual FunctionDefinition FindFunction(string name)
+        {
+            return Parent.FindFunction(name);
+        }
     }
 }

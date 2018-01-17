@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class RelationalEquality : InfixExpression
+    public class Modulo : InfixExpression
     {
         public override Type InferredType
         {
@@ -12,13 +12,13 @@ namespace Rhea.Ast.Nodes
                     throw new Exception(
                         $"Types of left ({Left.InferredType}) and right ({Right.InferredType}) sides of infix expression must match");
 
-                return new Type("bool");
+                return Left.InferredType;
             }
         }
 
         public override string ToString()
         {
-            return $"({Left} == {Right})";
+            return $"({Left} % {Right})";
         }
     }
 }
