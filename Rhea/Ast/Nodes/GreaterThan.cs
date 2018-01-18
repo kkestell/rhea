@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class GreaterThan : InfixExpression
+    public class GreaterThan : Infix
     {
         public override Type InferredType
         {

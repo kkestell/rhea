@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class UnaryExpression : Expression
+    public class Unary : Expression
     {
         public Expression Expression { get; set; }
 

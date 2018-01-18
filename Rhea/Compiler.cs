@@ -12,6 +12,8 @@ namespace Rhea
     {
         public string Compile(string source)
         {
+            source = source.Replace("\r\n", "\n");
+
             var input = new AntlrInputStream(source);
 
             var lexer = new RheaLexer(input);
@@ -25,7 +27,7 @@ namespace Rhea
 
             foreach (var f in builder.Program.Functions)
             {
-                var returnStatements = FindStatements<ReturnStatement>(f.Block).ToList();
+                var returnStatements = FindStatements<Return>(f.Block).ToList();
 
                 if (f.Type.Value == "void")
                 {
@@ -50,7 +52,7 @@ namespace Rhea
 
             foreach (var function in builder.Program.Functions)
             {
-                foreach (var ifStatement in FindStatements<IfStatement>(function.Block))
+                foreach (var ifStatement in FindStatements<If>(function.Block))
                 {
                     var typeName = ifStatement.Expression.InferredType.Value;
 
@@ -77,13 +79,13 @@ namespace Rhea
             return builder.ToString();
         }
 
-        IEnumerable<T> FindStatements<T>(Block scope)
+        private IEnumerable<T> FindStatements<T>(Block scope)
         {
             var childStatements = new List<T>();
 
             var scopes = scope
                 .Statements
-                .OfType<StatementWithBlock>();
+                .OfType<IStatementWithBlock>();
 
             foreach (var statement in scopes)
                 childStatements.AddRange(FindStatements<T>(statement.Block));

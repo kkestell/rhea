@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class Subtraction : InfixExpression
+    public class Subtraction : Infix
     {
         public override string ToString()
         {

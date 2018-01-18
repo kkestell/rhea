@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class Division : InfixExpression
+    public class Division : Infix
     {
         public override string ToString()
         {

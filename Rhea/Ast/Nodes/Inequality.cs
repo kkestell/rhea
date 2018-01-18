@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class LessThanOrEqualTo : InfixExpression
+    public class Inequality : Infix
     {
         public override Type InferredType
         {
@@ -18,7 +18,7 @@ namespace Rhea.Ast.Nodes
 
         public override string ToString()
         {
-            return $"({Left} <= {Right})";
+            return $"({Left} != {Right})";
         }
     }
 }

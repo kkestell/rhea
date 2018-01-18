@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class ReturnStatement : Statement
+    public class Return : Statement
     {
         public Expression Expression { get; set; }
 

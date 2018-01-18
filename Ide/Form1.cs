@@ -46,7 +46,6 @@ namespace Ide
 
         void textBox1_KeyUp(object sender, KeyEventArgs e)
         {
-            CompileAndUpdate();
         }
 
         void Log(string message)
@@ -132,6 +131,11 @@ fun main() -> int64 {
 }";
 
             textBox1.Text = source;
+            CompileAndUpdate();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
             CompileAndUpdate();
         }
     }

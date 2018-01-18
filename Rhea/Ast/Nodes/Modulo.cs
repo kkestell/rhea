@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class Modulo : InfixExpression
+    public class Modulo : Infix
     {
         public override Type InferredType
         {

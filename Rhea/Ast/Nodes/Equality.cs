@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class RelationalInequality : InfixExpression
+    public class Equality : Infix
     {
         public override Type InferredType
         {
@@ -18,7 +18,7 @@ namespace Rhea.Ast.Nodes
 
         public override string ToString()
         {
-            return $"({Left} != {Right})";
+            return $"({Left} == {Right})";
         }
     }
 }

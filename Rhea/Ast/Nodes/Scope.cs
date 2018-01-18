@@ -1,14 +1,11 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public abstract class Scope
+    public interface IScope
     {
-        public Scope Parent { get; set; }
+        IScope Parent { get; set; }
 
-        public abstract VariableDeclaration FindDeclaration(string name);
+        VariableDeclaration FindDeclaration(string name);
 
-        public virtual FunctionDefinition FindFunction(string name)
-        {
-            return Parent.FindFunction(name);
-        }
+        FunctionDefinition FindFunction(string name);
     }
 }

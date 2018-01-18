@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class UnaryNegation : UnaryExpression
+    public class UnaryNegation : Unary
     {
         public override Type InferredType => Expression.InferredType;
 

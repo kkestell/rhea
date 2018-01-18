@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class InfixExpression : Expression
+    public class Infix : Expression
     {
         public Expression Left { get; set; }
         public Expression Right { get; set; }

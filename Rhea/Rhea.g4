@@ -8,6 +8,10 @@ function
     : 'fun' name '(' parameterList ')' '->' type block
     ;
 
+SEMICOLON
+	: ';'
+	;
+
 parameterList
     : parameter? | parameterList ',' parameter
     ;
@@ -21,10 +25,15 @@ block
     ;
 
 statement
-    : 'var' name ':' type '=' expression # variableInitialization
+    : 'var' name '=' expression # variableInitialization
 	| 'var' name ':' type # variableDeclaration
 	| 'return' expression? # returnStatement
 	| 'if' '(' expression ')' block # ifStatement
+	| 'for' '(' 'var' name 'in' range ')' block # forRange
+	;
+
+range
+	: start=expression '..' end=expression
 	;
 
 expression
@@ -49,7 +58,7 @@ argument
 
 atom
 	: number
-	| boolean
+	| bool
 	| variable
 	;
 
@@ -57,7 +66,7 @@ number
 	: value=SCIENTIFIC_NUMBER
 	;
 
-boolean
+bool
 	: 'true' # true
 	| 'false' # false
 	;
@@ -159,6 +168,10 @@ OP_GT_EQ
 	: '>='
 	;
 
+COMMENT
+	: ('#' ~('\r' | '\n')* '\r'? '\n') -> skip
+	;
+
 WS
-    : [ \t\r\n]+ -> skip
+    : (' ' | '\t' | '\n')+ -> skip
     ;

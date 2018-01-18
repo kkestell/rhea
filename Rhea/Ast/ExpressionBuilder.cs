@@ -107,12 +107,12 @@ namespace Rhea.Ast
 
         public override Expression VisitUnaryExpression([NotNull] RheaParser.UnaryExpressionContext context)
         {
-            UnaryExpression node;
+            Unary node;
 
             switch (context.op.Type)
             {
                 case RheaLexer.OP_ADD:
-                    node = new UnaryExpression();
+                    node = new Unary();
                     break;
                 case RheaLexer.OP_SUB:
                     node = new UnaryNegation();
@@ -129,7 +129,7 @@ namespace Rhea.Ast
 
         public override Expression VisitInfixExpression([NotNull] RheaParser.InfixExpressionContext context)
         {
-            InfixExpression node;
+            Infix node;
 
             switch (context.op.Type)
             {
@@ -152,19 +152,19 @@ namespace Rhea.Ast
                     node = new LessThan();
                     break;
                 case RheaLexer.OP_LT_EQ:
-                    node = new LessThanOrEqualTo();
+                    node = new LessThanEqual();
                     break;
                 case RheaLexer.OP_GT:
                     node = new GreaterThan();
                     break;
                 case RheaLexer.OP_GT_EQ:
-                    node = new GreaterThanOrEqualTo();
+                    node = new GreaterThanEqual();
                     break;
                 case RheaLexer.OP_EQ:
-                    node = new RelationalEquality();
+                    node = new Equality();
                     break;
                 case RheaLexer.OP_NE:
-                    node = new RelationalInequality();
+                    node = new Inequality();
                     break;
                 default:
                     throw new NotSupportedException();

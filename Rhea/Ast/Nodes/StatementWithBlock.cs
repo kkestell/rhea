@@ -1,7 +1,7 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class StatementWithBlock : Statement
+    public interface IStatementWithBlock
     {
-        public Block Block { get; set; }
+        Block Block { get; set; }
     }
 }

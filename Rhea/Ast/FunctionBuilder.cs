@@ -20,9 +20,12 @@ namespace Rhea.Ast
             var name = context.name().GetText();
             var type = context.type().GetText();
 
-            var block = new Block();
+            var block = new Block
+            {
+                Parent = Function
+            };
 
-            var statements = context.block()._statements.Select(s => new StatementBuilder(block).Visit(s));
+            var statements = context.block()._statements.Select(s => new StatementBuilder(block, block).Visit(s));
 
             block.Statements = statements;
 

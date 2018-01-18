@@ -86,7 +86,13 @@ There is no need to declare functions before calling them.
 Variables are declared using the `var` keyword:
 
 ```
-var x : int64 = 100
+var x : int64
 ```
 
-This creates a new variable `x` in the current scope and initializes it with the result of the expression following the `=`.
+This creates a new 64-bit integer, `x`, in the current scope.
+
+Variables can also be initialized when they're created. In this case, their type can be inferred:
+
+```
+var x = 1
+```
