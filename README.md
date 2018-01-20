@@ -96,3 +96,39 @@ Variables can also be initialized when they're created. In this case, their type
 ```
 var x = 1
 ```
+
+## Control Flow
+
+### If statements
+
+```
+if(x == 0) {
+	# ...
+}
+```
+
+## For Staements
+
+```
+for(var x in 0..10) {
+	# ...
+}
+```
+
+## Structs
+
+### Declaration
+
+```
+struct point {
+  x : int64
+  y : int64
+}
+```
+
+### Member Access
+
+```
+var origin : point
+point.x = 1
+```
