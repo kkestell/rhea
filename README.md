@@ -102,7 +102,7 @@ var x = 1
 ### If statements
 
 ```
-if(x == 0) {
+if (x == 0) {
 	# ...
 }
 ```
@@ -110,7 +110,7 @@ if(x == 0) {
 ## For Staements
 
 ```
-for(var x in 0..10) {
+for (var x in 0..10) {
 	# ...
 }
 ```
