@@ -99,19 +99,21 @@ var x = 1
 
 ## Control Flow
 
-### If statements
+### If Statements
 
 ```
 if (x == 0) {
-	# ...
+  # ...
 }
 ```
 
-## For Staements
+## For Statements
+
+### Ranges
 
 ```
 for (var x in 0..10) {
-	# ...
+  # ...
 }
 ```
 
