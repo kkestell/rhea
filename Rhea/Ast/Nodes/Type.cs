@@ -6,33 +6,33 @@
         {
             if (type.StartsWith("^"))
             {
-                Value = type.TrimStart('^');
+                Name = type.TrimStart('^');
                 Pointer = true;
             }
             else
             {
-                Value = type;
+                Name = type;
             }
         }
 
-        public string Value { get; set; }
+        public string Name { get; set; }
         public bool Pointer { get; set; }
 
         public static bool operator ==(Type t1, Type t2)
         {
-            return t1.Pointer == t2.Pointer && t1.Value == t2.Value;
+            return t1.Pointer == t2.Pointer && t1.Name == t2.Name;
         }
 
         public static bool operator !=(Type t1, Type t2)
         {
-            return t1.Pointer != t2.Pointer || t1.Value != t2.Value;
+            return t1.Pointer != t2.Pointer || t1.Name != t2.Name;
         }
 
         public override string ToString()
         {
-            var cType = Value;
+            var cType = Name;
 
-            switch (Value)
+            switch (Name)
             {
                 case "int8":
                     cType = "int8_t";

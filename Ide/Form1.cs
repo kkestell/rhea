@@ -107,10 +107,10 @@ namespace Ide
         private void fibonaciToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var source = @"fun fib(n : int64) -> int64 {
-  if(n == 0) {
+  if (n == 0) {
     return 0
   }
-  if(n == 1) {
+  if (n == 1) {
     return 1
   }
   return fib(n - 2) + fib(n - 1)
@@ -136,6 +136,22 @@ fun main() -> int64 {
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
+            CompileAndUpdate();
+        }
+
+        private void structsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var source = @"struct point {
+  x : int64
+  y : int64
+}
+
+fun main() -> int64 {
+  var origin : point
+  return origin.x
+}";
+
+            textBox1.Text = source;
             CompileAndUpdate();
         }
     }

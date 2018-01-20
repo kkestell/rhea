@@ -56,12 +56,15 @@
     <Compile Include="Ast\Nodes\GreaterThanEqual.cs" />
     <Compile Include="Ast\Nodes\LessThan.cs" />
     <Compile Include="Ast\Nodes\LessThanEqual.cs" />
+    <Compile Include="Ast\Nodes\Member.cs" />
+    <Compile Include="Ast\Nodes\MemberAccess.cs" />
     <Compile Include="Ast\Nodes\Modulo.cs" />
     <Compile Include="Ast\Nodes\ParensExpression.cs" />
     <Compile Include="Ast\Nodes\Range.cs" />
     <Compile Include="Ast\Nodes\Inequality.cs" />
-    <Compile Include="Ast\Nodes\Scope.cs" />
+    <Compile Include="Ast\Nodes\IScope.cs" />
     <Compile Include="Ast\Nodes\StatementWithBlock.cs" />
+    <Compile Include="Ast\Nodes\Struct.cs" />
     <Compile Include="Ast\Nodes\True.cs" />
     <Compile Include="Ast\ProgramBuilder.cs" />
     <Compile Include="Ast\Nodes\Division.cs" />

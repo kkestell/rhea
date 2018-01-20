@@ -23,10 +23,15 @@
             return Parent.FindFunction(name);
         }
 
+        public Struct FindStruct(string name)
+        {
+            return Parent.FindStruct(name);
+        }
+
         public override string ToString()
         {
             return
-                $"for({Iterator.Type} {Iterator.Name} = {Range.Start}; {Iterator.Name} < {Range.End}; {Iterator.Name}++)\n{Block}";
+                $"for ({Iterator.Type} {Iterator.Name} = {Range.Start}; {Iterator.Name} < {Range.End}; {Iterator.Name}++) {Block}";
         }
     }
 }

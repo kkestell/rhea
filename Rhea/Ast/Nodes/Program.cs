@@ -4,9 +4,13 @@ using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
+    using System.Text.RegularExpressions;
+
     public class Program : Node
     {
         public List<FunctionDefinition> Functions { get; set; } = new List<FunctionDefinition>();
+
+        public List<Struct> Structs { get; set; } = new List<Struct>();
 
         public override string ToString()
         {
@@ -22,6 +26,11 @@ namespace Rhea.Ast.Nodes
                 "\n",
                 standardIncludes.Select(i => $"#include <{i}.h>"));
 
+            var structs = string.Join(
+                "\n",
+                Structs
+                    .Select(s => s.ToString()));
+
             var forwardDeclarations = string.Join(
                 "\n",
                 Functions
@@ -33,7 +42,11 @@ namespace Rhea.Ast.Nodes
                 Functions
                     .Select(f => f.ToString()));
 
-            return $"{includeStatements}\n\n{forwardDeclarations}\n\n{functionDefinitions}";
+            var program = $"{includeStatements}\n\n{structs}\n\n{forwardDeclarations}\n\n{functionDefinitions}";
+
+            program = Regex.Replace(program, @"\n{2,}", "\n\n");
+
+            return program;
         }
 
         public FunctionDefinition FindFunction(string name)
@@ -44,6 +57,11 @@ namespace Rhea.Ast.Nodes
                 throw new Exception($"Cannot find function {name}");
 
             return func;
+        }
+
+        public Struct FindStruct(string name)
+        {
+            return Structs.FirstOrDefault(s => s.Name == name);
         }
     }
 }

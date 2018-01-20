@@ -178,5 +178,15 @@ namespace Rhea.Ast
 
             return node;
         }
+
+        public override Expression VisitMemberAccess(RheaParser.MemberAccessContext context)
+        {
+            return new MemberAccess
+            {
+                Scope = Scope,
+                VariableName = context.structName.Text,
+                MemberName = context.memberName.Text
+            };
+        }
     }
 }

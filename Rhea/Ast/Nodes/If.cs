@@ -8,7 +8,7 @@
 
         public override string ToString()
         {
-            return $"if({Expression})\n{Block}";
+            return $"if ({Expression}) {Block}";
         }
     }
 }

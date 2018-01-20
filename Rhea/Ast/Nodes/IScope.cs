@@ -7,5 +7,7 @@
         VariableDeclaration FindDeclaration(string name);
 
         FunctionDefinition FindFunction(string name);
+
+        Struct FindStruct(string name);
     }
 }

@@ -6,7 +6,9 @@ namespace Rhea.Ast.Nodes
     public class Block : IScope
     {
         public Block Scope { get; set; }
+
         public IEnumerable<Statement> Statements { get; set; }
+
         public IScope Parent { get; set; }
 
         public override string ToString()
@@ -30,6 +32,11 @@ namespace Rhea.Ast.Nodes
         public FunctionDefinition FindFunction(string name)
         {
             return Parent.FindFunction(name);
+        }
+
+        public Struct FindStruct(string name)
+        {
+            return Parent.FindStruct(name);
         }
     }
 }

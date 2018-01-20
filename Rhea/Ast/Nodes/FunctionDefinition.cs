@@ -33,6 +33,11 @@ namespace Rhea.Ast.Nodes
             return Program.FindFunction(name);
         }
 
+        public Struct FindStruct(string name)
+        {
+            return Program.FindStruct(name);
+        }
+
         public VariableDeclaration FindDeclaration(string name)
         {
             var parameter = Parameters.SingleOrDefault(p => p.Name == name);

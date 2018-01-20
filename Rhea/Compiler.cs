@@ -29,7 +29,7 @@ namespace Rhea
             {
                 var returnStatements = FindStatements<Return>(f.Block).ToList();
 
-                if (f.Type.Value == "void")
+                if (f.Type.Name == "void")
                 {
                     foreach (var s in returnStatements)
                     {
@@ -40,12 +40,12 @@ namespace Rhea
                 else
                 {
                     if (!returnStatements.Any())
-                        throw new Exception($"Function {f.Name} must return a {f.Type.Value}, but it returns nothing.");
+                        throw new Exception($"Function {f.Name} must return a {f.Type.Name}, but it returns nothing.");
 
                     foreach (var s in returnStatements)
                     {
                         if (s.Expression.InferredType != f.Type)
-                            throw new Exception($"Function {f.Name} must return a {f.Type.Value}, not a {s.Expression.InferredType.Value}.");
+                            throw new Exception($"Function {f.Name} must return a {f.Type.Name}, not a {s.Expression.InferredType.Name}.");
                     }
                 }
             }
@@ -54,7 +54,7 @@ namespace Rhea
             {
                 foreach (var ifStatement in FindStatements<If>(function.Block))
                 {
-                    var typeName = ifStatement.Expression.InferredType.Value;
+                    var typeName = ifStatement.Expression.InferredType.Name;
 
                     if (typeName != "bool")
                         throw new Exception($"Expression must evaluate to a bool, but evaluates to a {typeName}");

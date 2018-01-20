@@ -1,16 +1,20 @@
 grammar Rhea;
 
 program
-    : function+
+    : (function | struct)*
+    ;
+
+struct
+    : 'struct' structName=ID '{' members+=member+ '}'
+    ;
+
+member
+    : memberName=ID ':' type
     ;
 
 function
     : 'fun' name '(' parameterList ')' '->' type block
     ;
-
-SEMICOLON
-	: ';'
-	;
 
 parameterList
     : parameter? | parameterList ',' parameter
@@ -59,6 +63,7 @@ argument
 atom
 	: number
 	| bool
+	| memberAccess
 	| variable
 	;
 
@@ -70,6 +75,10 @@ bool
 	: 'true' # true
 	| 'false' # false
 	;
+
+memberAccess
+    : structName=ID '.' memberName=ID
+    ;
 
 variable
    : value=ID
