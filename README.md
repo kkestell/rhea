@@ -33,7 +33,7 @@ Line comments start with `#` and end at the end of the line:
 ### Reserved Words
 
 ```
-fun if return var true false
+false for fun if return struct true var
 ```
 
 ### Identifiers
