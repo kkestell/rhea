@@ -1,4 +1,6 @@
-﻿namespace Rhea.Ast.Nodes
+﻿using System;
+
+namespace Rhea.Ast.Nodes
 {
     public class Return : Statement
     {

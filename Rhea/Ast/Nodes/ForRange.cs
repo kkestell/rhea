@@ -2,7 +2,7 @@
 {
     public class ForRange : Statement, IStatementWithBlock, IScope
     {
-        public IScope Parent { get; set; }
+        public IScope ParentScope { get; set; }
 
         public Block Block { get; set; }
 
@@ -15,17 +15,17 @@
             if (Iterator.Name == name)
                 return Iterator;
 
-            return Parent.FindDeclaration(name);
+            return ParentScope.FindDeclaration(name);
         }
 
-        public FunctionDefinition FindFunction(string name)
+        public Function FindFunction(string name)
         {
-            return Parent.FindFunction(name);
+            return ParentScope.FindFunction(name);
         }
 
         public Struct FindStruct(string name)
         {
-            return Parent.FindStruct(name);
+            return ParentScope.FindStruct(name);
         }
 
         public override string ToString()

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Rhea.Ast.Nodes
 {
@@ -8,7 +9,18 @@ namespace Rhea.Ast.Nodes
 
         public IEnumerable<Expression> Arguments { get; set; }
 
-        public override Type InferredType => Scope.FindFunction(Name).Type;
+        public override Type InferredType
+        {
+            get
+            {
+                var func = ParentBlock.FindFunction(Name);
+                    
+                if(func == null)
+                    throw new Exception($"Can't find declaration for {Name}");
+                        
+                return func.Type;
+            }
+        }
 
         public override string ToString()
         {

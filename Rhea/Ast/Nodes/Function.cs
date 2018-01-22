@@ -4,14 +4,19 @@ using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
-    public class FunctionDefinition : IScope
+    public class Function : IScope
     {
         public string Name { get; set; }
+
         public Type Type { get; set; }
-        public List<FunctionParameter> Parameters { get; set; } = new List<FunctionParameter>();
+
+        public IEnumerable<FunctionParameter> Parameters { get; set; }
+
         public Block Block { get; set; }
-        public Program Program { get; set; }
-        public IScope Parent { get; set; }
+
+        public Module Module { get; set; }
+
+        public IScope ParentScope { get; set; }
 
         public string Declaration
         {
@@ -28,14 +33,14 @@ namespace Rhea.Ast.Nodes
             return $"{Type} {Name}({argList}) {Block}";
         }
 
-        public FunctionDefinition FindFunction(string name)
+        public Function FindFunction(string name)
         {
-            return Program.FindFunction(name);
+            return Module.FindFunction(name);
         }
 
         public Struct FindStruct(string name)
         {
-            return Program.FindStruct(name);
+            return Module.FindStruct(name);
         }
 
         public VariableDeclaration FindDeclaration(string name)

@@ -2,11 +2,11 @@
 {
     public interface IScope
     {
-        IScope Parent { get; set; }
+        IScope ParentScope { get; set; }
 
         VariableDeclaration FindDeclaration(string name);
 
-        FunctionDefinition FindFunction(string name);
+        Function FindFunction(string name);
 
         Struct FindStruct(string name);
     }

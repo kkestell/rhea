@@ -5,11 +5,11 @@ namespace Rhea.Ast.Nodes
 {
     public class Block : IScope
     {
-        public Block Scope { get; set; }
+        public Block ParentBlock { get; set; }
 
         public IEnumerable<Statement> Statements { get; set; }
 
-        public IScope Parent { get; set; }
+        public IScope ParentScope { get; set; }
 
         public override string ToString()
         {
@@ -26,17 +26,17 @@ namespace Rhea.Ast.Nodes
             if (declaration != null)
                 return declaration;
 
-            return Parent.FindDeclaration(name);
+            return ParentScope.FindDeclaration(name);
         }
 
-        public FunctionDefinition FindFunction(string name)
+        public Function FindFunction(string name)
         {
-            return Parent.FindFunction(name);
+            return ParentScope.FindFunction(name);
         }
 
         public Struct FindStruct(string name)
         {
-            return Parent.FindStruct(name);
+            return ParentScope.FindStruct(name);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Rhea.Ast.Nodes
         {
             get
             {
-                var variableDeclaration = Scope.FindDeclaration(Name);
+                var variableDeclaration = ParentBlock.FindDeclaration(Name);
 
                 if(variableDeclaration == null)
                     throw new Exception($"Can't find declaration for {Name}");

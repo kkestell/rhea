@@ -29,7 +29,7 @@ namespace Ide
 
         string Compile()
         {
-            return compiler.Compile(textBox1.Text).Replace("\n", "\r\n");
+            return compiler.Compile(textBox1.Text).Replace("\n", Environment.NewLine);
         }
 
         void CompileAndUpdate()
@@ -40,7 +40,7 @@ namespace Ide
             }
             catch (Exception ex)
             {
-                textBox2.Text = ex.Message;
+                textBox2.Text = ex.Message.Replace("\n", Environment.NewLine);
             }
         }
 

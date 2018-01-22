@@ -48,8 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ast\ArgumentListBuilder.cs" />
     <Compile Include="Ast\Nodes\Addition.cs" />
+    <Compile Include="Ast\Nodes\Assignment.cs" />
     <Compile Include="Ast\Nodes\False.cs" />
     <Compile Include="Ast\Nodes\ForRange.cs" />
     <Compile Include="Ast\Nodes\GreaterThan.cs" />
@@ -58,6 +58,7 @@
     <Compile Include="Ast\Nodes\LessThanEqual.cs" />
     <Compile Include="Ast\Nodes\Member.cs" />
     <Compile Include="Ast\Nodes\MemberAccess.cs" />
+    <Compile Include="Ast\Nodes\MemberAssignment.cs" />
     <Compile Include="Ast\Nodes\Modulo.cs" />
     <Compile Include="Ast\Nodes\ParensExpression.cs" />
     <Compile Include="Ast\Nodes\Range.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="Ast\Nodes\StatementWithBlock.cs" />
     <Compile Include="Ast\Nodes\Struct.cs" />
     <Compile Include="Ast\Nodes\True.cs" />
-    <Compile Include="Ast\ProgramBuilder.cs" />
+    <Compile Include="Ast\ModuleBuilder.cs" />
     <Compile Include="Ast\Nodes\Division.cs" />
     <Compile Include="Ast\ExpressionBuilder.cs" />
     <Compile Include="Ast\Nodes\FunctionCall.cs" />
@@ -75,12 +76,11 @@
     <Compile Include="Ast\Nodes\Infix.cs" />
     <Compile Include="Ast\Nodes\Atom.cs" />
     <Compile Include="Ast\Nodes\FunctionParameter.cs" />
-    <Compile Include="Ast\FunctionBuilder.cs" />
     <Compile Include="Ast\Nodes\Block.cs" />
     <Compile Include="Ast\Nodes\Expression.cs" />
-    <Compile Include="Ast\Nodes\FunctionDefinition.cs" />
+    <Compile Include="Ast\Nodes\Function.cs" />
     <Compile Include="Ast\Nodes\Node.cs" />
-    <Compile Include="Ast\Nodes\Program.cs" />
+    <Compile Include="Ast\Nodes\Module.cs" />
     <Compile Include="Ast\Nodes\Equality.cs" />
     <Compile Include="Ast\Nodes\Return.cs" />
     <Compile Include="Ast\Nodes\Statement.cs" />

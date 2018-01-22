@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
     using System.Text.RegularExpressions;
 
-    public class Program : Node
+    public class Module : Node
     {
-        public List<FunctionDefinition> Functions { get; set; } = new List<FunctionDefinition>();
+        public string Name { get; }
 
-        public List<Struct> Structs { get; set; } = new List<Struct>();
+        public IEnumerable<Function> Functions { get; set; }
+
+        public IEnumerable<Struct> Structs { get; set; }
+
+        public Module(string name)
+        {
+            Name = name;
+        }
 
         public override string ToString()
         {
@@ -49,14 +55,9 @@ namespace Rhea.Ast.Nodes
             return program;
         }
 
-        public FunctionDefinition FindFunction(string name)
+        public Function FindFunction(string name)
         {
-            var func = Functions.Where(f => f.Name == name).SingleOrDefault();
-
-            if (func == null)
-                throw new Exception($"Cannot find function {name}");
-
-            return func;
+            return Functions.SingleOrDefault(f => f.Name == name);
         }
 
         public Struct FindStruct(string name)

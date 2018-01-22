@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
 using Rhea.Ast.Nodes;
@@ -7,14 +8,14 @@ using Int64 = Rhea.Ast.Nodes.Int64;
 
 namespace Rhea.Ast
 {
-    internal class ExpressionBuilder : RheaBaseVisitor<Expression>
+    class ExpressionBuilder : RheaBaseVisitor<Expression>
     {
-        public ExpressionBuilder(Block scope)
+        public ExpressionBuilder(Block parentBlock)
         {
-            Scope = scope;
+            this.parentBlock = parentBlock;
         }
 
-        public Block Scope { get; set; }
+        readonly Block parentBlock;
 
         public override Expression VisitNumber([NotNull] RheaParser.NumberContext context)
         {
@@ -26,14 +27,14 @@ namespace Rhea.Ast
             if (long.TryParse(val, out int64))
                 return new Int64
                 {
-                    Scope = Scope,
+                    ParentBlock = parentBlock,
                     Value = int64
                 };
 
             if (double.TryParse(val, out float64))
                 return new Float64
                 {
-                    Scope = Scope,
+                    ParentBlock = parentBlock,
                     Value = float64
                 };
 
@@ -50,13 +51,13 @@ namespace Rhea.Ast
                 case "int32":
                     return new Int32
                     {
-                        Scope = Scope,
+                        ParentBlock = parentBlock,
                         Value = int.Parse(value)
                     };
                 case "float32":
                     return new Float32
                     {
-                        Scope = Scope,
+                        ParentBlock = parentBlock,
                         Value = float.Parse(value)
                     };
                 default:
@@ -68,7 +69,7 @@ namespace Rhea.Ast
         {
             return new Variable
             {
-                Scope = Scope,
+                ParentBlock = parentBlock,
                 Name = context.value.Text
             };
         }
@@ -87,21 +88,18 @@ namespace Rhea.Ast
         {
             return new ParensExpression
             {
-                Scope = Scope,
+                ParentBlock = parentBlock,
                 Expression = Visit(context.expression())
             };
         }
 
         public override Expression VisitFunctionCall(RheaParser.FunctionCallContext context)
         {
-            var builder = new ArgumentListBuilder(Scope);
-            ParseTreeWalker.Default.Walk(builder, context.arguments);
-
             return new FunctionCall
             {
-                Scope = Scope,
+                ParentBlock = parentBlock,
                 Name = context.functionName.Text,
-                Arguments = builder.Arguments
+                Arguments = context._arguments.Select(a => new ExpressionBuilder(parentBlock).Visit(a))
             };
         }
 
@@ -121,7 +119,7 @@ namespace Rhea.Ast
                     throw new NotImplementedException();
             }
 
-            node.Scope = Scope;
+            node.ParentBlock = parentBlock;
             node.Expression = Visit(context.expression());
 
             return node;
@@ -171,10 +169,10 @@ namespace Rhea.Ast
             }
 
             node.Left = Visit(context.left);
-            node.Left.Scope = Scope;
+            node.Left.ParentBlock = parentBlock;
 
             node.Right = Visit(context.right);
-            node.Right.Scope = Scope;
+            node.Right.ParentBlock = parentBlock;
 
             return node;
         }
@@ -183,7 +181,7 @@ namespace Rhea.Ast
         {
             return new MemberAccess
             {
-                Scope = Scope,
+                ParentBlock = parentBlock,
                 VariableName = context.structName.Text,
                 MemberName = context.memberName.Text
             };

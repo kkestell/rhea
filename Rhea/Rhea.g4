@@ -1,7 +1,7 @@
 grammar Rhea;
 
-program
-    : (function | struct)*
+module
+    : (functions+=function | structs+=struct)*
     ;
 
 struct
@@ -13,11 +13,7 @@ member
     ;
 
 function
-    : 'fun' name '(' parameterList ')' '->' type block
-    ;
-
-parameterList
-    : parameter? | parameterList ',' parameter
+    : 'fun' name '(' parameters+=parameter* (',' parameters+=parameter)* ')' '->' type block
     ;
 
 parameter
@@ -29,11 +25,13 @@ block
     ;
 
 statement
-    : 'var' name '=' expression # variableInitialization
-	| 'var' name ':' type # variableDeclaration
-	| 'return' expression? # returnStatement
-	| 'if' '(' expression ')' block # ifStatement
-	| 'for' '(' 'var' name 'in' range ')' block # forRange
+    : 'var' name '=' expression                        # variableInitialization
+	| 'var' name ':' type                              # variableDeclaration
+	| 'return' expression?                             # returnStatement
+	| 'if' '(' expression ')' block                    # ifStatement
+	| 'for' '(' 'var' name 'in' range ')' block        # forRange
+	| variableName=ID '=' expression                   # assignment
+	| variableName=ID '.' memberName=ID '=' expression # memberAssignment
 	;
 
 range
@@ -41,24 +39,16 @@ range
 	;
 
 expression
-   : '(' expression ')' # parensExpression
-   | op=('+' | '-') expression # unaryExpression
-   | left=expression op=('*' | '/' | '%') right=expression # infixExpression
-   | left=expression op=('+' | '-') right=expression # infixExpression
-   | left=expression op=('<' | '<=' | '>' | '>=') right=expression # infixExpression
-   | left=expression op=('==' | '!=') right=expression # infixExpression
-   | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')' # numberWithPrecision
-   | functionName=ID '(' arguments=argumentList ')' # functionCall
-   | value=atom # valueExpression
+   : '(' expression ')'                                                          # parensExpression
+   | op=('+' | '-') expression                                                   # unaryExpression
+   | left=expression op=('*' | '/' | '%') right=expression                       # infixExpression
+   | left=expression op=('+' | '-') right=expression                             # infixExpression
+   | left=expression op=('<' | '<=' | '>' | '>=') right=expression               # infixExpression
+   | left=expression op=('==' | '!=') right=expression                           # infixExpression
+   | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')'                    # numberWithPrecision
+   | functionName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
+   | value=atom                                                                  # valueExpression
    ;
-
-argumentList
-    : argument? | argumentList ',' argument
-    ;
-
-argument
-    : expression
-    ;
 
 atom
 	: number
@@ -72,7 +62,7 @@ number
 	;
 
 bool
-	: 'true' # true
+	: 'true'  # true
 	| 'false' # false
 	;
 
@@ -110,27 +100,11 @@ ID
     ;
 
 SCIENTIFIC_NUMBER
-   : NUMBER (E SIGN? NUMBER)?
+   : NUMBER (('E' | 'e') ('+' | '-')? NUMBER)?
    ;
 
 fragment NUMBER
    : ('0' .. '9') + ('.' ('0' .. '9') +)?
-   ;
-
-fragment E
-   : 'E' | 'e'
-   ;
-
-fragment SIGN
-   : ('+' | '-')
-   ;
-
-LPAREN
-   : '('
-   ;
-
-RPAREN
-   : ')'
    ;
 
 OP_ADD

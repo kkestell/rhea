@@ -3,22 +3,47 @@ using Rhea.Ast.Nodes;
 
 namespace Rhea.Ast
 {
-    internal class StatementBuilder : RheaBaseVisitor<Statement>
+    class StatementBuilder : RheaBaseVisitor<Statement>
     {
-        private readonly IScope parent;
-        private readonly Block scope;
+        readonly IScope parentScope;
+        readonly Block parentBlock;
 
-        public StatementBuilder(Block scope, IScope parent)
+        public StatementBuilder(Block parentBlock, IScope parentScope)
         {
-            this.scope = scope;
-            this.parent = parent;
+            this.parentBlock = parentBlock;
+            this.parentScope = parentScope;
+        }
+
+        public override Statement VisitAssignment(RheaParser.AssignmentContext context)
+        {
+            var expression = new ExpressionBuilder(parentBlock).Visit(context.expression());
+
+            return new Assignment
+            {
+                ParentBlock = parentBlock,
+                VariableName = context.variableName.Text,
+                Expression = expression
+            };
+        }
+
+        public override Statement VisitMemberAssignment(RheaParser.MemberAssignmentContext context)
+        {
+            var expression = new ExpressionBuilder(parentBlock).Visit(context.expression());
+
+            return new MemberAssignment
+            {
+                ParentBlock = parentBlock,
+                VariableName = context.variableName.Text,
+                MemberName = context.memberName.Text,
+                Expression = expression
+            };
         }
 
         public override Statement VisitVariableDeclaration(RheaParser.VariableDeclarationContext context)
         {
             return new VariableDeclaration
             {
-                Scope = scope,
+                ParentBlock = parentBlock,
                 Name = context.name().GetText(),
                 Type = new Type(context.type().GetText())
             };
@@ -26,11 +51,11 @@ namespace Rhea.Ast
 
         public override Statement VisitVariableInitialization(RheaParser.VariableInitializationContext context)
         {
-            var expression = new ExpressionBuilder(scope).Visit(context.expression());
+            var expression = new ExpressionBuilder(parentBlock).Visit(context.expression());
             
             return new VariableInitialization
             {
-                Scope = scope,
+                ParentBlock = parentBlock,
                 Name = context.name().GetText(),
                 Type = expression.InferredType,
                 Expression = expression
@@ -41,11 +66,12 @@ namespace Rhea.Ast
         {
             var returnStatement = new Return
             {
-                Scope = scope
+                Context = context,
+                ParentBlock = parentBlock
             };
 
             if (context.expression() != null)
-                returnStatement.Expression = new ExpressionBuilder(scope).Visit(context.expression());
+                returnStatement.Expression = new ExpressionBuilder(parentBlock).Visit(context.expression());
 
             return returnStatement;
         }
@@ -54,14 +80,14 @@ namespace Rhea.Ast
         {
             var newIfStatement = new If
             {
-                Scope = scope,
-                Expression = new ExpressionBuilder(scope).Visit(context.expression())
+                ParentBlock = parentBlock,
+                Expression = new ExpressionBuilder(parentBlock).Visit(context.expression())
             };
 
             var newBlock = new Block
             {
-                Scope = scope,
-                Parent = parent
+                ParentBlock = parentBlock,
+                ParentScope = parentScope
             };
 
             newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock, newIfStatement.Block).Visit(s));
@@ -75,27 +101,27 @@ namespace Rhea.Ast
         {
             var range = new Range
             {
-                Start = new ExpressionBuilder(scope).Visit(context.range().start),
-                End = new ExpressionBuilder(scope).Visit(context.range().end)
+                Start = new ExpressionBuilder(parentBlock).Visit(context.range().start),
+                End = new ExpressionBuilder(parentBlock).Visit(context.range().end)
             };
 
             var newForRange = new ForRange
             {
-                Scope = scope,
+                ParentBlock = parentBlock,
+                ParentScope = parentScope,
                 Range = range,
                 Iterator = new VariableDeclaration
                 {
                     Name = context.name().GetText(),
-                    Scope = scope,
+                    ParentBlock = parentBlock,
                     Type = range.InferredType
-                },
-                Parent = parent
+                }
             };
 
             var newBlock = new Block
             {
-                Scope = scope,
-                Parent = newForRange
+                ParentBlock = parentBlock,
+                ParentScope = newForRange
             };
 
             newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock, newForRange.Block).Visit(s));

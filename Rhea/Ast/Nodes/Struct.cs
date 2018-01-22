@@ -2,7 +2,7 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class Struct
+    public class Struct : Node
     {
         public string Name { get; set; }
         

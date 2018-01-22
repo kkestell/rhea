@@ -13,12 +13,12 @@ public override Type InferredType
 {
     get
     {
-        var variableDeclaration = Scope.FindDeclaration(VariableName);
+        var variableDeclaration = ParentBlock.FindDeclaration(VariableName);
 
         if(variableDeclaration == null)
             throw new Exception($"Can't find declaration for variable {VariableName}");
 
-        var structDeclaration = Scope.FindStruct(variableDeclaration.Type.Name);
+        var structDeclaration = ParentBlock.FindStruct(variableDeclaration.Type.Name);
 
         if(structDeclaration == null)
             throw new Exception($"Can't find a struct named {variableDeclaration.Type.Name}");
