@@ -65,6 +65,7 @@
     <Compile Include="Ast\Nodes\Inequality.cs" />
     <Compile Include="Ast\Nodes\IScope.cs" />
     <Compile Include="Ast\Nodes\StatementWithBlock.cs" />
+    <Compile Include="Ast\Nodes\StringLiteral.cs" />
     <Compile Include="Ast\Nodes\Struct.cs" />
     <Compile Include="Ast\Nodes\True.cs" />
     <Compile Include="Ast\ModuleBuilder.cs" />

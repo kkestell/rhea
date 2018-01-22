@@ -186,5 +186,15 @@ namespace Rhea.Ast
                 MemberName = context.memberName.Text
             };
         }
+
+        public override Expression VisitStringLiteral(RheaParser.StringLiteralContext context)
+        {
+            return new StringLiteral
+            {
+                Context = context,
+                ParentBlock = parentBlock,
+                Value = context.value.Text.Replace("\"", "")
+            };
+        }
     }
 }

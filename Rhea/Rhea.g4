@@ -47,6 +47,7 @@ expression
    | left=expression op=('==' | '!=') right=expression                           # infixExpression
    | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')'                    # numberWithPrecision
    | functionName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
+   | value=STRING                                                                # stringLiteral
    | value=atom                                                                  # valueExpression
    ;
 

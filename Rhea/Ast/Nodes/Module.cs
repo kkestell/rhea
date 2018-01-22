@@ -28,9 +28,18 @@ namespace Rhea.Ast.Nodes
                 "stdlib"
             };
 
-            var includeStatements = string.Join(
+            var standardIncludeStatements = string.Join(
                 "\n",
                 standardIncludes.Select(i => $"#include <{i}.h>"));
+
+            var vendorIncludes = new[]
+            {
+                "gc"
+            };
+
+            var vendorIncludeStatements = string.Join(
+                "\n",
+                vendorIncludes.Select(i => $"#include \"{i}.h\""));
 
             var structs = string.Join(
                 "\n",
@@ -48,7 +57,21 @@ namespace Rhea.Ast.Nodes
                 Functions
                     .Select(f => f.ToString()));
 
-            var program = $"{includeStatements}\n\n{structs}\n\n{forwardDeclarations}\n\n{functionDefinitions}";
+            var runtime = @"typedef struct {
+  char* data;
+  size_t len;
+} string;
+
+string* str(char* val)
+{
+  string* s = (string*)GC_MALLOC_ATOMIC(sizeof(string));
+  s->len = strlen(val);
+  s->data = (char*)GC_MALLOC_ATOMIC(sizeof(char) * s->len);
+  strcpy(s->data, val);
+  return s;
+}";
+
+            var program = $"{standardIncludeStatements}\n\n{vendorIncludeStatements}\n\n{runtime}\n\n{structs}\n\n{forwardDeclarations}\n\n{functionDefinitions}";
 
             program = Regex.Replace(program, @"\n{2,}", "\n\n");
 
