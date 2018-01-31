@@ -46,7 +46,7 @@ namespace Rhea
 
 		void CheckModule(Module module)
 		{
-            // Return statements
+			// Return statements
 
 			foreach (var f in module.Functions)
 			{
@@ -54,7 +54,7 @@ namespace Rhea
 
 				if (f.Type.Name == "void")
 				{
-                    // Void functions must return void
+					// Void functions must return void
 
 					foreach (var s in returnStatements)
 					{
@@ -64,12 +64,12 @@ namespace Rhea
 				}
 				else
 				{
-                    // Non-void functions must return something
+					// Non-void functions must return something
 
 					if (!returnStatements.Any())
 						throw new Exception($"Function {f.Name} must return a {f.Type.Name}, but it returns nothing.");
 
-                    // And it must be the appropriate type
+					// And it must be the appropriate type
 
 					foreach (var s in returnStatements)
 					{
@@ -79,7 +79,7 @@ namespace Rhea
 				}
 			}
 
-            // The expressions in if statements must evaluate to a boolean
+			// The expressions in if statements must evaluate to a boolean
 
 			foreach (var function in module.Functions)
 			{
@@ -92,7 +92,7 @@ namespace Rhea
 				}
 			}
 
-            // Prevent multiple declarations of variables with the same name in the same scope
+			// Prevent multiple declarations of variables with the same name in the same scope
 
 			foreach (var function in module.Functions)
 			{
@@ -109,7 +109,7 @@ namespace Rhea
 				}
 			}
 
-            // Types of left and right sides of assignment statements must match
+			// Types of left and right sides of assignment statements must match
 
 			foreach (var function in module.Functions)
 			{
@@ -125,7 +125,7 @@ namespace Rhea
 				}
 			}
 
-            // Types of left and right sides of member assignment statements must match
+			// Types of left and right sides of member assignment statements must match
 
 			foreach (var function in module.Functions)
 			{
