@@ -166,6 +166,20 @@ var origin : point
 point.x = 1
 ```
 
+### Methods
+
+Methods are special functions which take a struct as an argument.
+
+```
+fun string#newTrim(self : string) -> string {
+	return self.trim()
+}
+
+fun main() -> int64 {
+	return " foo ".newTrim().length()
+}
+```
+
 ## Calling C from Rhea
 
 Use the `extern` keyword.

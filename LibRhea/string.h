@@ -12,8 +12,8 @@ typedef struct {
 } string;
 
 string* string__new(char* val);
-string* string__dup(string* str);
-string* string__trim(string* str);
-int64_t string__length(string* str);
+string* string__dup(string* self);
+string* string__trim(string* self);
+int64_t string__length(string* self);
 
 #endif

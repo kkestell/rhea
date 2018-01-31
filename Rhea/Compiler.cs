@@ -13,9 +13,9 @@ namespace Rhea
 	{
 		readonly string standardLibrary = @"
 			struct string {}
-			extern fun string#dup(str : string) -> string
-			extern fun string#trim(str : string) -> string
-			extern fun string#length(str : string) -> int64
+			extern fun string#dup(self : string) -> string
+			extern fun string#trim(self : string) -> string
+			extern fun string#length(self : string) -> int64
 		";
 
 		public string Compile(string source)
