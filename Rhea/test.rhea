@@ -1,4 +1,0 @@
-﻿fun main() -> void {
-  var message = "Hello World!"
-  message = "Goodbye World!"
-}

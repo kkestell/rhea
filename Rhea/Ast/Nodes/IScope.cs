@@ -1,13 +1,17 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public interface IScope
-    {
-        IScope ParentScope { get; set; }
+	public interface IScope
+	{
+		IScope ParentScope
+		{
+			get;
+			set;
+		}
 
-        VariableDeclaration FindDeclaration(string name);
+		VariableDeclaration FindDeclaration(string name);
 
-        Function FindFunction(string name);
+		Function FindFunction(string name);
 
-        Struct FindStruct(string name);
-    }
+		Struct FindStruct(string name);
+	}
 }

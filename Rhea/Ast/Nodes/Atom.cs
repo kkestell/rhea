@@ -1,6 +1,6 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public abstract class Atom : Expression
-    {
-    }
+	public abstract class Atom : Expression
+	{
+	}
 }

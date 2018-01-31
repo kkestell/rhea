@@ -1,8 +1,8 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-	class ParensExpression : Expression
+	public class Int32 : Number
 	{
-		public Expression Expression
+		public int Value
 		{
 			get;
 			set;
@@ -10,12 +10,12 @@
 
 		public override Type InferredType
 		{
-			get => Expression.InferredType;
+			get => new Type("int32");
 		}
 
 		public override string ToString()
 		{
-			return $"({Expression})";
+			return Value.ToString();
 		}
 	}
 }

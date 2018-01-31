@@ -1,6 +1,6 @@
 # Rhea
 
-Rhea is a simple, type safe programming language which compiles to C.
+Rhea is a simple, type safe, partially type inferred, garbage collected programming language which compiles to C.
 
 ## Example
 
@@ -33,7 +33,7 @@ Line comments start with `#` and end at the end of the line:
 ### Reserved Words
 
 ```
-false for fun if return struct true var
+extern false for fun if return struct true var
 ```
 
 ### Identifiers
@@ -59,13 +59,44 @@ Rhea uses curly braces to define blocks. You can use a block anywhere a statemen
 
 ### Booleans
 
-A boolean value represents truth or falsehood. There are two boolean literals, `true` and `false`. 
+A boolean value represents truth or falsehood. There are two boolean literals, `true` and `false`.
 
 ### Numbers
 
 Rhea has eight integer types. Four signed: `int8`, `int16`, `int32`, and `int64`, and four unsigned: `uint8`, `uint16`, `uint32`, and `uint64`.
 
 There are two floating point types: `float32`, and `float64`.
+
+### Strings
+
+Strings have a type of `string` and are always allocated on the heap.
+
+Strings are technically structs. The Rhea standard library provides a number of methods to make working with strings easier.
+
+#### `string#dup() -> string`
+
+Duplicates a string.
+
+
+```
+var duplicate = "Hello World".dup()
+```
+
+#### `string#trim() -> string`
+
+Trims leading and trailing whitespace from a string.
+
+```
+var trimmed = "  Hello World  ".trim()
+```
+
+#### `string#length() -> int64`
+
+Returns the length of a string.
+
+```
+var length = "Hello World".length()
+```
 
 ## Functions
 
@@ -86,15 +117,15 @@ There is no need to declare functions before calling them.
 Variables are declared using the `var` keyword:
 
 ```
-var x : int64
+var name : string
 ```
 
-This creates a new 64-bit integer, `x`, in the current scope.
+This creates a new string, `name`, in the current scope.
 
 Variables can also be initialized when they're created. In this case, their type can be inferred:
 
 ```
-var x = 1
+var name = "Glarpy"
 ```
 
 ## Control Flow
@@ -107,9 +138,9 @@ if (x == 0) {
 }
 ```
 
-## For Statements
+### For Statements
 
-### Ranges
+#### Ranges
 
 ```
 for (var x in 0..10) {
@@ -133,4 +164,16 @@ struct point {
 ```
 var origin : point
 point.x = 1
+```
+
+## Calling C from Rhea
+
+Use the `extern` keyword.
+
+```
+extern fun some_c_function() -> int32
+
+fun main() -> int32 {
+  return some_c_function()
+}
 ```

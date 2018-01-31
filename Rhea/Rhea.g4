@@ -1,7 +1,7 @@
-grammar Rhea;
+﻿grammar Rhea;
 
 module
-    : (functions+=function | structs+=struct)*
+    : (functions+=function | structs+=struct | externFunctions+=externFunctionDeclaration)*
     ;
 
 struct
@@ -13,7 +13,15 @@ member
     ;
 
 function
-    : 'fun' name '(' parameters+=parameter* (',' parameters+=parameter)* ')' '->' type block
+    : functionDeclaration block
+    ;
+
+functionDeclaration
+    : 'fun' name '(' parameters+=parameter* (',' parameters+=parameter)* ')' '->' type
+    ;
+
+externFunctionDeclaration
+    : 'extern' functionDeclaration
     ;
 
 parameter
@@ -26,17 +34,17 @@ block
 
 statement
     : 'var' name '=' expression                        # variableInitialization
-	| 'var' name ':' type                              # variableDeclaration
-	| 'return' expression?                             # returnStatement
-	| 'if' '(' expression ')' block                    # ifStatement
-	| 'for' '(' 'var' name 'in' range ')' block        # forRange
-	| variableName=ID '=' expression                   # assignment
-	| variableName=ID '.' memberName=ID '=' expression # memberAssignment
-	;
+    | 'var' name ':' type                              # variableDeclaration
+    | 'return' expression?                             # returnStatement
+    | 'if' '(' expression ')' block                    # ifStatement
+    | 'for' '(' 'var' name 'in' range ')' block        # forRange
+    | variableName=ID '=' expression                   # assignment
+    | variableName=ID '.' memberName=ID '=' expression # memberAssignment
+    ;
 
 range
-	: start=expression '..' end=expression
-	;
+    : start=expression '..' end=expression
+    ;
 
 expression
    : '(' expression ')'                                                          # parensExpression
@@ -46,26 +54,27 @@ expression
    | left=expression op=('<' | '<=' | '>' | '>=') right=expression               # infixExpression
    | left=expression op=('==' | '!=') right=expression                           # infixExpression
    | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')'                    # numberWithPrecision
-   | functionName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
+   | name '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
+   | receiver=expression '.' methodName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # methodCall
    | value=STRING                                                                # stringLiteral
    | value=atom                                                                  # valueExpression
    ;
 
 atom
-	: number
-	| bool
-	| memberAccess
-	| variable
-	;
+    : number
+    | bool
+    | memberAccess
+    | variable
+    ;
 
 number
-	: value=SCIENTIFIC_NUMBER
-	;
+    : value=SCIENTIFIC_NUMBER
+    ;
 
 bool
-	: 'true'  # true
-	| 'false' # false
-	;
+    : 'true'  # true
+    | 'false' # false
+    ;
 
 memberAccess
     : structName=ID '.' memberName=ID
@@ -84,7 +93,7 @@ ESC
     ;
 
 name
-    : '&'? ID
+    : '&'? ID ('#' ID)*
     ;
 
 type
@@ -97,7 +106,7 @@ NUMERIC_TYPE
     ;
 
 ID
-    : [a-zA-Z][a-zA-Z0-9]*
+    : [a-zA-Z][a-zA-Z0-9_]*
     ;
 
 SCIENTIFIC_NUMBER
@@ -121,40 +130,36 @@ OP_MUL
    ;
 
 OP_DIV
-	: '/'
-	;
+    : '/'
+    ;
 
 OP_MOD
-	: '%'
-	;
+    : '%'
+    ;
 
 OP_EQ
-	: '=='
-	;
+    : '=='
+    ;
 
 OP_NE
-	: '!='
-	;
+    : '!='
+    ;
 
 OP_LT
-	: '<'
-	;
+    : '<'
+    ;
 
 OP_LT_EQ
-	: '<='
-	;
+    : '<='
+    ;
 
 OP_GT
-	: '>'
-	;
+    : '>'
+    ;
 
 OP_GT_EQ
-	: '>='
-	;
-
-COMMENT
-	: ('#' ~('\r' | '\n')* '\r'? '\n') -> skip
-	;
+    : '>='
+    ;
 
 WS
     : (' ' | '\t' | '\n')+ -> skip

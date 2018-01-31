@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
+
 using Rhea.Ast;
 using Rhea.Ast.Nodes;
 
@@ -10,7 +11,25 @@ namespace Rhea
 {
     public class Compiler
     {
+        readonly string standardLibrary = @"
+            struct string {}
+            extern fun string#dup(str : string) -> string
+            extern fun string#trim(str : string) -> string
+            extern fun string#length(str : string) -> int64
+        ";
+
         public string Compile(string source)
+        {
+            var stdlib = CompileModule(standardLibrary);
+
+            var module = CompileModule(source, stdlib);
+
+            CheckModule(module);
+
+            return module.ToString();
+        }
+
+        Module CompileModule(string source, Module parent = null)
         {
             source = source.Replace("\r\n", "\n");
 
@@ -22,11 +41,14 @@ namespace Rhea
             var parser = new RheaParser(tokens);
             var tree = parser.module();
 
-            var mainModule = new ModuleBuilder().Visit(tree);
+            return new ModuleBuilder(parent).Visit(tree);
+        }
 
+        void CheckModule(Module module)
+        {
             // Return statements
 
-            foreach (var f in mainModule.Functions)
+            foreach (var f in module.Functions)
             {
                 var returnStatements = FindStatements<Return>(f.Block).ToList();
 
@@ -59,7 +81,7 @@ namespace Rhea
 
             // The expressions in if statements must evaluate to a boolean
 
-            foreach (var function in mainModule.Functions)
+            foreach (var function in module.Functions)
             {
                 foreach (var ifStatement in FindStatements<If>(function.Block))
                 {
@@ -72,7 +94,7 @@ namespace Rhea
 
             // Prevent multiple declarations of variables with the same name in the same scope
 
-            foreach (var function in mainModule.Functions)
+            foreach (var function in module.Functions)
             {
                 foreach (var variableDeclaration in FindStatements<VariableDeclaration>(function.Block))
                 {
@@ -89,7 +111,7 @@ namespace Rhea
 
             // Types of left and right sides of assignment statements must match
 
-            foreach (var function in mainModule.Functions)
+            foreach (var function in module.Functions)
             {
                 foreach (var assignment in FindStatements<Assignment>(function.Block))
                 {
@@ -105,7 +127,7 @@ namespace Rhea
 
             // Types of left and right sides of member assignment statements must match
 
-            foreach (var function in mainModule.Functions)
+            foreach (var function in module.Functions)
             {
                 foreach (var assignment in FindStatements<MemberAssignment>(function.Block))
                 {
@@ -116,7 +138,7 @@ namespace Rhea
 
                     var structDeclaration = assignment.ParentBlock.FindStruct(variableDeclaration.Type.Name);
 
-                    if(structDeclaration == null)
+                    if (structDeclaration == null)
                         throw new Exception($"Can't find declaration for {variableDeclaration.Type.Name}");
 
                     var member = structDeclaration.Members.SingleOrDefault(m => m.Name == assignment.MemberName);
@@ -128,11 +150,9 @@ namespace Rhea
                         throw new Exception($"Types of left ({member.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of member assignment statement must match");
                 }
             }
-
-            return mainModule.ToString();
         }
 
-        private IEnumerable<T> FindStatements<T>(Block scope)
+        static IEnumerable<T> FindStatements<T>(Block scope)
         {
             var childStatements = new List<T>();
 

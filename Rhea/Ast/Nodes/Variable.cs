@@ -2,26 +2,30 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class Variable : Atom
-    {
-        public string Name { get; set; }
+	public class Variable : Atom
+	{
+		public string Name
+		{
+			get;
+			set;
+		}
 
-        public override Type InferredType
-        {
-            get
-            {
-                var variableDeclaration = ParentBlock.FindDeclaration(Name);
+		public override Type InferredType
+		{
+			get
+			{
+				var variableDeclaration = ParentBlock.FindDeclaration(Name);
 
-                if(variableDeclaration == null)
-                    throw new Exception($"Can't find declaration for {Name}");
+				if(variableDeclaration == null)
+					throw new Exception($"Can't find declaration for {Name}");
 
-                return variableDeclaration.Type;
-            }
-        }
+				return variableDeclaration.Type;
+			}
+		}
 
-        public override string ToString()
-        {
-            return Name;
-        }
-    }
+		public override string ToString()
+		{
+			return Name;
+		}
+	}
 }

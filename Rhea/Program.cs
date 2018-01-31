@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Rhea
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -24,8 +24,6 @@ namespace Rhea
 
             sw.Stop();
             Console.WriteLine(sw.Elapsed);
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
         }
     }
 }

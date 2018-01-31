@@ -2,12 +2,22 @@
 
 namespace Rhea.Ast.Nodes
 {
-    public class StringLiteral : Expression
-    {
-        public string Value { get; set; }
+	public class StringLiteral : Expression
+	{
+		public string Value
+		{
+			get;
+			set;
+		}
 
-        public override string ToString() => $"str(\"{Value}\")";
+		public override string ToString()
+		{
+			return $"string__new(\"{Value}\")";
+		}
 
-        public override Type InferredType => new Type("^string");
-    }
+		public override Type InferredType
+		{
+			get => new Type("string");
+		}
+	}
 }

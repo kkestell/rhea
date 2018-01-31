@@ -1,15 +1,21 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-	public class UnaryNegation : Unary
+	public class Int64 : Number
 	{
+		public long Value
+		{
+			get;
+			set;
+		}
+
 		public override Type InferredType
 		{
-			get => Expression.InferredType;
+			get => new Type("int64");
 		}
 
 		public override string ToString()
 		{
-			return $"(-{Expression})";
+			return $"{Value}L";
 		}
 	}
 }

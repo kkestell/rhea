@@ -1,37 +1,60 @@
 ﻿namespace Rhea.Ast.Nodes
 {
-    public class ForRange : Statement, IStatementWithBlock, IScope
-    {
-        public IScope ParentScope { get; set; }
+	public class ForRange : Statement, IStatementWithBlock, IScope
+	{
+		public VariableDeclaration Iterator
+		{
+			get;
+			set;
+		}
 
-        public Block Block { get; set; }
+		public Range Range
+		{
+			get;
+			set;
+		}
 
-        public VariableDeclaration Iterator { get; set; }
+		public override string ToString()
+		{
+			return $"for ({Iterator.Type} {Iterator.Name} = {Range.Start}; {Iterator.Name} < {Range.End}; {Iterator.Name}++) {Block}";
+		}
 
-        public Range Range { get; set; }
+        #region IStatementWithBlock
 
-        public VariableDeclaration FindDeclaration(string name)
-        {
-            if (Iterator.Name == name)
-                return Iterator;
+		public Block Block
+		{
+			get;
+			set;
+		}
 
-            return ParentScope.FindDeclaration(name);
-        }
+        #endregion
 
-        public Function FindFunction(string name)
-        {
-            return ParentScope.FindFunction(name);
-        }
+        #region IScope
 
-        public Struct FindStruct(string name)
-        {
-            return ParentScope.FindStruct(name);
-        }
+		public IScope ParentScope
+		{
+			get;
+			set;
+		}
 
-        public override string ToString()
-        {
-            return
-                $"for ({Iterator.Type} {Iterator.Name} = {Range.Start}; {Iterator.Name} < {Range.End}; {Iterator.Name}++) {Block}";
-        }
-    }
+		public VariableDeclaration FindDeclaration(string name)
+		{
+			if (Iterator.Name == name)
+				return Iterator;
+
+			return ParentScope.FindDeclaration(name);
+		}
+
+		public Function FindFunction(string name)
+		{
+			return ParentScope.FindFunction(name);
+		}
+
+		public Struct FindStruct(string name)
+		{
+			return ParentScope.FindStruct(name);
+		}
+
+        #endregion
+	}
 }

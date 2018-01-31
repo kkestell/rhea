@@ -4,57 +4,102 @@ using System.Linq;
 
 namespace Rhea.Ast.Nodes
 {
-    public class Function : IScope
-    {
-        public string Name { get; set; }
+	public class Function : IScope
+	{
+		public string Name
+		{
+			get;
+			set;
+		}
 
-        public Type Type { get; set; }
+		public Type Type
+		{
+			get;
+			set;
+		}
 
-        public IEnumerable<FunctionParameter> Parameters { get; set; }
+		public IEnumerable<FunctionParameter> Parameters
+		{
+			get;
+			set;
+		}
 
-        public Block Block { get; set; }
+		public Block Block
+		{
+			get;
+			set;
+		}
 
-        public Module Module { get; set; }
+		public Module Module
+		{
+			get;
+			set;
+		}
 
-        public IScope ParentScope { get; set; }
+		public string MangledName
+		{
+			get => Name.Replace("#", "__");
+		}
 
-        public string Declaration
-        {
-            get
-            {
-                var argList = string.Join(", ", Parameters.Select(p => p.ToString()));
-                return $"{Type} {Name}({argList});";
-            }
-        }
+		public string Declaration
+		{
+			get
+			{
+				var returnType = Type.ToString();
+				if (Name == "main")
+					returnType = "int";
 
-        public override string ToString()
-        {
-            var argList = string.Join(", ", Parameters.Select(a => a.ToString()));
-            return $"{Type} {Name}({argList}) {Block}";
-        }
+				var argList = string.Join(", ", Parameters.Select(p => p.ToString()));
 
-        public Function FindFunction(string name)
-        {
-            return Module.FindFunction(name);
-        }
+				return $"{returnType} {MangledName}({argList});";
+			}
+		}
 
-        public Struct FindStruct(string name)
-        {
-            return Module.FindStruct(name);
-        }
+		public override string ToString()
+		{
+			var returnType = Type.ToString();
+			if (Name == "main")
+				returnType = "int";
 
-        public VariableDeclaration FindDeclaration(string name)
-        {
-            var parameter = Parameters.SingleOrDefault(p => p.Name == name);
+			var argList = string.Join(", ", Parameters.Select(a => a.ToString()));
 
-            if (parameter != null)
-                return new VariableDeclaration
-                {
-                    Name = parameter.Name,
-                    Type = parameter.Type
-                };
+			return $"{returnType} {MangledName}({argList}) {Block}";
+		}
 
-            throw new Exception($"Can't find declaration for {name}");
-        }
-    }
+        #region IScope
+
+		public IScope ParentScope
+		{
+			get;
+			set;
+		}
+
+		public Function FindFunction(string name)
+		{
+			return Module.FindFunction(name);
+		}
+
+		public Struct FindStruct(string name)
+		{
+			return Module.FindStruct(name);
+		}
+
+		public VariableDeclaration FindDeclaration(string name)
+		{
+			var parameter = Parameters.SingleOrDefault(p => p.Name == name);
+
+			if (parameter != null)
+			{
+				return new VariableDeclaration
+				{
+					Name = parameter.Name,
+					Type = parameter.Type
+				};
+			}
+
+			throw new Exception($"Can't find declaration for {name}");
+		}
+
+        #endregion
+	}
 }
