@@ -172,11 +172,11 @@ Methods are special functions which take a struct as an argument.
 
 ```
 fun string#newTrim(self : string) -> string {
-	return self.trim()
+  return self.trim()
 }
 
 fun main() -> int64 {
-	return " foo ".newTrim().length()
+  return " foo ".newTrim().length()
 }
 ```
 
