@@ -6,6 +6,7 @@ using Antlr4.Runtime;
 
 using Rhea.Ast;
 using Rhea.Ast.Nodes;
+using Rhea.Errors;
 
 namespace Rhea
 {
@@ -59,7 +60,7 @@ namespace Rhea
 					foreach (var s in returnStatements)
 					{
 						if (s.Expression != null)
-							throw new Exception($"Function `{f.Name}` must return `void`, but it returns a `{s.Expression.InferredType.Name}`.\n\n{s.Source}");
+							throw new TypeError($"Function `{f.Name}` must return `void`, but it returns a `{s.Expression.InferredType.Name}`.\n\n{s.Source}");
 					}
 				}
 				else
@@ -74,7 +75,7 @@ namespace Rhea
 					foreach (var s in returnStatements)
 					{
 						if (s.Expression.InferredType != f.Type)
-							throw new Exception($"Function {f.Name} must return a {f.Type.Name}, not a {s.Expression.InferredType.Name}.");
+							throw new TypeError($"Function {f.Name} must return a {f.Type.Name}, not a {s.Expression.InferredType.Name}.");
 					}
 				}
 			}
@@ -88,7 +89,7 @@ namespace Rhea
 					var typeName = ifStatement.Expression.InferredType.Name;
 
 					if (typeName != "bool")
-						throw new Exception($"Expression must evaluate to a bool, but evaluates to a {typeName}");
+						throw new TypeError($"Expression must evaluate to a bool, but evaluates to a {typeName}");
 				}
 			}
 
@@ -121,7 +122,7 @@ namespace Rhea
 						throw new Exception($"Can't find declaration for {assignment.VariableName}");
 
 					if (declaration.Type != assignment.Expression.InferredType)
-						throw new Exception($"Types of left ({declaration.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of assignment statement must match");
+						throw new TypeError($"Types of left ({declaration.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of assignment statement must match");
 				}
 			}
 
@@ -147,7 +148,7 @@ namespace Rhea
 						throw new Exception($"Struct {structDeclaration.Name} has no member named {assignment.MemberName}");
 
 					if (member.Type != assignment.Expression.InferredType)
-						throw new Exception($"Types of left ({member.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of member assignment statement must match");
+						throw new TypeError($"Types of left ({member.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of member assignment statement must match");
 				}
 			}
 		}

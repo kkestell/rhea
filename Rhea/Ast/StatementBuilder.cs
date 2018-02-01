@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Rhea.Ast.Nodes;
 
@@ -91,7 +92,14 @@ namespace Rhea.Ast
 				ParentScope = parentScope
 			};
 
-			newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock, newIfStatement.Block).Visit(s));
+			if (context?.block()?._statements == null)
+			{
+				newBlock.Statements = new List<Statement>();
+			}
+			else
+			{
+				newBlock.Statements = context.block()._statements.Select(s => new StatementBuilder(newBlock, newIfStatement.Block).Visit(s));
+			}
 
 			newIfStatement.Block = newBlock;
 

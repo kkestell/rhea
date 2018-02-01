@@ -1,0 +1,13 @@
+fun main() -> void {
+  for(var i in 0..100) {
+    if(i % 3 == 0) {
+      # Fizz
+    }
+    if(i % 5 == 0) {
+      # Buzz
+    }
+    if((i % 3 != 0) && (i % 5 != 0)) {
+      # i
+    }
+  }
+}

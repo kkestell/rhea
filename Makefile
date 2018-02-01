@@ -1,9 +1,9 @@
 rhea:
 	dotnet build
 
-test:
-	dotnet run test.rhea --project Rhea
-	clang test.c -L./LibRhea/bin -I./LibRhea -lgc -lrhea -o test
+example:
+	dotnet run example.rhea --project Rhea
+	clang example.c -L./LibRhea/bin -I./LibRhea -lgc -lrhea -o example
 
 clean:
 	rm -f test.c
