@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Rhea.Errors;
 
 namespace Rhea.Ast.Nodes
 {
@@ -10,8 +10,7 @@ namespace Rhea.Ast.Nodes
 			{
 				if (Left.InferredType != Right.InferredType)
 				{
-					throw new Exception(
-						$"Types of left ({Left.InferredType}) and right ({Right.InferredType}) sides of infix expression must match");
+					throw new TypeError($"Types of left ({Left.InferredType}) and right ({Right.InferredType}) sides of infix expression must match");
 				}
 
 				return Left.InferredType;

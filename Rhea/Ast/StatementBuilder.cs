@@ -139,5 +139,13 @@ namespace Rhea.Ast
 
 			return newForRange;
 		}
+
+		public override Statement VisitExpressionStatement(RheaParser.ExpressionStatementContext context)
+		{
+			return new ExpressionStatement
+			{
+				Expression = new ExpressionBuilder(parentBlock).Visit(context.expression()),
+			};
+		}
 	}
 }

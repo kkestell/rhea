@@ -97,7 +97,7 @@ namespace Rhea.Ast.Nodes
 				};
 			}
 
-			throw new Exception($"Can't find declaration for {name}");
+			return null;
 		}
 
         #endregion

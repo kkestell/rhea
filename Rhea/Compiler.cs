@@ -47,6 +47,19 @@ namespace Rhea
 
 		void CheckModule(Module module)
 		{
+            // Variable initialization expression must have a valid type
+
+            foreach (var f in module.Functions)
+            {
+                var variableInitializations = FindStatements<VariableInitialization>(f.Block).ToList();
+
+                foreach (var i in variableInitializations)
+                {
+                    // Make sure that the expression's type can be inferred
+                    var inferredType = i.Expression.InferredType;
+                }
+            }
+
 			// Return statements
 
 			foreach (var f in module.Functions)
@@ -68,7 +81,7 @@ namespace Rhea
 					// Non-void functions must return something
 
 					if (!returnStatements.Any())
-						throw new Exception($"Function {f.Name} must return a {f.Type.Name}, but it returns nothing.");
+						throw new FunctionMustReturnAValueError($"Function {f.Name} must return a {f.Type.Name}, but it returns nothing.");
 
 					// And it must be the appropriate type
 
@@ -106,7 +119,7 @@ namespace Rhea
 						.Where(d => d.Name == variableDeclaration.Name);
 
 					if (duplicateDeclarations.Count() > 1)
-						throw new Exception($"Multiple declaration of variable {variableDeclaration.Name}");
+						throw new MultipleDeclarationError($"Multiple declaration of variable {variableDeclaration.Name}");
 				}
 			}
 
@@ -119,7 +132,7 @@ namespace Rhea
 					var declaration = assignment.ParentBlock.FindDeclaration(assignment.VariableName);
 
 					if (declaration == null)
-						throw new Exception($"Can't find declaration for {assignment.VariableName}");
+						throw new UseOfUndefinedVariableError($"Can't find declaration for {assignment.VariableName}");
 
 					if (declaration.Type != assignment.Expression.InferredType)
 						throw new TypeError($"Types of left ({declaration.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of assignment statement must match");
@@ -149,6 +162,19 @@ namespace Rhea
 
 					if (member.Type != assignment.Expression.InferredType)
 						throw new TypeError($"Types of left ({member.Type.Name}) and right ({assignment.Expression.InferredType.Name}) sides of member assignment statement must match");
+				}
+			}
+
+			// Method calls call methods which exist
+
+			foreach (var function in module.Functions)
+			{
+				foreach (var expression in FindStatements<ExpressionStatement>(function.Block))
+				{
+					if(expression.Expression is MethodCall methodCall)
+					{
+						var typeName = methodCall.InferredType.Name;
+					}
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using Rhea.Errors;
+
 namespace Rhea.Ast.Nodes
 {
 	public class MethodCall : FunctionCall
@@ -33,7 +35,7 @@ namespace Rhea.Ast.Nodes
 				var structDeclaration = ParentBlock.FindStruct(StructName);
 
 				if(structDeclaration == null)
-					throw new Exception($"Can't find declaration for struct {StructName}");
+					throw new UseOfUndefinedStructError($"Can't find declaration for struct {StructName}");
 
 				return structDeclaration.Name;
 			}
@@ -46,7 +48,7 @@ namespace Rhea.Ast.Nodes
 				var func = ParentBlock.FindFunction(FunctionName);
 
 				if (func == null)
-					throw new Exception($"Can't find declaration for {FunctionName}");
+					throw new UseOfUndefinedFunctionError($"Can't find declaration for {FunctionName}");
 
 				return func.Type;
 			}

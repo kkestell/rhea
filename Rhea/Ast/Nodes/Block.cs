@@ -35,8 +35,8 @@ namespace Rhea.Ast.Nodes
 		public VariableDeclaration FindDeclaration(string name)
 		{
 			var declaration = Statements
-			.OfType<VariableDeclaration>()
-			.FirstOrDefault(d => d.Name == name);
+				.OfType<VariableDeclaration>()
+				.FirstOrDefault(d => d.Name == name);
 
 			return declaration ?? ParentScope.FindDeclaration(name);
 		}

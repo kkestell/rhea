@@ -1,12 +1,18 @@
 rhea:
-	dotnet build
+	make -C Rhea
+	make -C LibRhea
+
+test:
+	make -C Test
 
 example:
 	dotnet run example.rhea --project Rhea
 	clang example.c -L./LibRhea/bin -I./LibRhea -lgc -lrhea -o example
 
 clean:
-	rm -f test.c
-	rm -f test
+	make clean -C Rhea
+	make clean -C LibRhea
+	rm -f example.c
+	rm -f example
 
-.PHONY: rhea test clean
+.PHONY: rhea test clean example

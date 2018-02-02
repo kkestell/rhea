@@ -55,6 +55,18 @@ namespace Test
 
 		#region Compiler Checks
 
+        [Fact]
+        public void VariableInitializationExpressionInvalidType()
+        {
+            Assert.Throws<TypeError>(() =>
+                new Compiler().Compile(@"
+                    fun main() -> void {
+                        var x = 1 + 1.5
+                    }
+                ")
+            );
+        }
+
 		[Fact]
 		public void IfExpressionMustEvaluateToABoolean()
 		{
@@ -73,7 +85,7 @@ namespace Test
 		[Fact]
 		public void MultipleDeclarationsInScope()
 		{
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<MultipleDeclarationError>(() =>
 				new Compiler().Compile(@"
 					fun main() -> void {
 						var x : int64
@@ -90,19 +102,48 @@ namespace Test
 				new Compiler().Compile(@"
 					fun main() -> void {
 						var x : int64
-						x = 0.5
+						x = ""invalid""
 					}
 				")
 			);
 		}
 
-		#endregion
+        #endregion
 
-		#region Syntax
+        #region Syntax
 
-		#region Return Statements
+        #region Assignent
 
-		[Fact]
+        [Fact]
+        public void AssignmentToUndefinedVariable()
+        {
+            Assert.Throws<UseOfUndefinedVariableError>(() =>
+                new Compiler().Compile(@"
+                    fun main() -> void {
+                        foo = 1
+                    }
+                ")
+            );
+        }
+
+        [Fact]
+        public void AssignmentTypesMustMatch()
+        {
+            Assert.Throws<TypeError>(() =>
+                new Compiler().Compile(@"
+                    fun main() -> void {
+                        var x : int64
+                        x = 3.14
+                    }
+                ")
+            );
+        }
+
+        #endregion
+
+        #region Return Statements
+
+        [Fact]
 		public void ReturnVoid()
 		{
 			new Compiler().Compile(@"
@@ -127,7 +168,7 @@ namespace Test
 		[Fact]
 		public void ReturnNothing()
 		{
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<FunctionMustReturnAValueError>(() =>
 				new Compiler().Compile(@"
 					fun main() -> int32 {
 					}
@@ -162,7 +203,7 @@ namespace Test
 		{
 			new Compiler().Compile(@"
 				fun main() -> int64 {
-					return 1 + 1
+					return 1
 				}
 			");
 		}
@@ -173,7 +214,7 @@ namespace Test
 			Assert.Throws<TypeError>(() =>
 				new Compiler().Compile(@"
 					fun main() -> int64 {
-						return 1.5 + 1.5
+						return 1.5
 					}
 				")
 			);
@@ -183,14 +224,14 @@ namespace Test
 		public void ReturnStructMember()
 		{
 			new Compiler().Compile(@"
+                fun main() -> int64 {
+                    var quux : foo
+                    quux.bar = 0
+                    return quux.bar
+                }
+
 				struct foo {
 					bar : int64
-				}
-
-				fun main() -> int64 {
-					var quux : foo
-					quux.bar = 0
-					return quux.bar
 				}
 			");
 		}
@@ -200,14 +241,14 @@ namespace Test
 		{
 			Assert.Throws<TypeError>(() =>
 				new Compiler().Compile(@"
+                    fun main() -> int64 {
+                        var quux : foo
+                        quux.bar = 0
+                        return quux.bar
+                    }
+
 					struct foo {
 						bar : int32
-					}
-
-					fun main() -> int64 {
-						var quux : foo
-						quux.bar = 0
-						return quux.bar
 					}
 				")
 			);
@@ -217,18 +258,18 @@ namespace Test
 		public void ReturnMethodCall()
 		{
 			new Compiler().Compile(@"
+                fun main() -> int64 {
+                    var quux : foo
+                    quux.bar = 42
+                    return quux.bar()
+                }
+
 				struct foo {
 					bar : int64
 				}
 
 				fun foo#bar(self : foo) -> int64 {
 					return self.bar
-				}
-
-				fun main() -> int64 {
-					var quux : foo
-					quux.bar = 42
-					return quux.bar()
 				}
 			");
 		}
@@ -238,18 +279,18 @@ namespace Test
 		{
 			Assert.Throws<TypeError>(() =>
 				new Compiler().Compile(@"
+                    fun main() -> int64 {
+                        var quux : foo
+                        quux.bar = int32(42)
+                        return quux.bar()
+                    }
+
 					struct foo {
 						bar : int32
 					}
 
 					fun foo#bar(self : foo) -> int32 {
 						return self.bar
-					}
-
-					fun main() -> int64 {
-						var quux : foo
-						quux.bar = int32(42)
-						return quux.bar()
 					}
 				")
 			);
@@ -286,16 +327,31 @@ namespace Test
 			");
 		}
 
-		[Fact]
-		public void IfBoolean()
-		{
-			new Compiler().Compile(@"
-				fun main() -> void {
-					if(true) {
-					}
-				}
-			");
-		}
+        [Fact]
+        public void IfBoolean()
+        {
+            new Compiler().Compile(@"
+                fun main() -> void {
+                    if(true) {
+                    }
+                }
+            ");
+        }
+
+        [Fact]
+        public void IfFunctionThatReturnsBoolean()
+        {
+            new Compiler().Compile(@"
+                fun main() -> void {
+                    if(foo()) {
+                    }
+                }
+
+                fun foo() -> bool {
+                    return true
+                }
+            ");
+        }
 
 		#endregion
 
@@ -304,7 +360,7 @@ namespace Test
 		[Fact]
 		public void MethodCallReceiverMustBeStruct()
 		{
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<UseOfUndefinedStructError>(() =>
 				new Compiler().Compile(@"
 					fun main() -> void {
 						var foo = 0
@@ -335,7 +391,7 @@ namespace Test
 		[Fact]
 		public void MethodCallFunctionMustExist()
 		{
-			Assert.Throws<Exception>(() =>
+			Assert.Throws<UseOfUndefinedFunctionError>(() =>
 				new Compiler().Compile(@"
 					struct quux {
 					}

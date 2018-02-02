@@ -40,6 +40,7 @@ statement
     | 'for' '(' 'var' name 'in' range ')' block        # forRange
     | variableName=ID '=' expression                   # assignment
     | variableName=ID '.' memberName=ID '=' expression # memberAssignment
+    | expression                                       # expressionStatement
     ;
 
 range
@@ -47,18 +48,18 @@ range
     ;
 
 expression
-   : '(' expression ')'                                                          # parensExpression
-   | op=('+' | '-') expression                                                   # unaryExpression
-   | left=expression op=('*' | '/' | '%') right=expression                       # infixExpression
-   | left=expression op=('+' | '-') right=expression                             # infixExpression
-   | left=expression op=('<' | '<=' | '>' | '>=') right=expression               # infixExpression
-   | left=expression op=('==' | '!=') right=expression                           # infixExpression
-   | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')'                    # numberWithPrecision
-   | name '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
-   | receiver=expression '.' methodName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # methodCall
-   | value=STRING                                                                # stringLiteral
-   | value=atom                                                                  # valueExpression
-   ;
+    : '(' expression ')'                                                          # parensExpression
+    | op=('+' | '-') expression                                                   # unaryExpression
+    | left=expression op=('*' | '/' | '%') right=expression                       # infixExpression
+    | left=expression op=('+' | '-') right=expression                             # infixExpression
+    | left=expression op=('<' | '<=' | '>' | '>=') right=expression               # infixExpression
+    | left=expression op=('==' | '!=') right=expression                           # infixExpression
+    | numericType=NUMERIC_TYPE '(' value=SCIENTIFIC_NUMBER ')'                    # numberWithPrecision
+    | name '(' arguments+=expression* (',' arguments+=expression)* ')' # functionCall
+    | receiver=expression '.' methodName=ID '(' arguments+=expression* (',' arguments+=expression)* ')' # methodCall
+    | value=STRING                                                                # stringLiteral
+    | value=atom                                                                  # valueExpression
+    ;
 
 atom
     : number

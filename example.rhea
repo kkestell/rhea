@@ -1,13 +1,13 @@
-fun main() -> void {
-  for(var i in 0..100) {
-    if(i % 3 == 0) {
-      # Fizz
-    }
-    if(i % 5 == 0) {
-      # Buzz
-    }
-    if((i % 3 != 0) && (i % 5 != 0)) {
-      # i
-    }
+fun fib(n : int64) -> int64 {
+  if (n == 0) {
+    return 0
   }
+  if (n == 1) {
+    return 1
+  }
+  return fib(n - 2) + fib(n - 1)
+}
+
+fun main() -> int64 {
+  return fib(10)
 }
