@@ -59,7 +59,6 @@ namespace Rhea.Ast
 			{
 				ParentBlock = parentBlock,
 				Name = context.name().GetText(),
-				Type = expression.InferredType,
 				Expression = expression
 			};
 		}
@@ -144,7 +143,7 @@ namespace Rhea.Ast
 		{
 			return new ExpressionStatement
 			{
-				Expression = new ExpressionBuilder(parentBlock).Visit(context.expression()),
+				Expression = new ExpressionBuilder(parentBlock).Visit(context.expression())
 			};
 		}
 	}

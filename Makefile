@@ -7,7 +7,7 @@ test:
 
 example:
 	dotnet run example.rhea --project Rhea
-	clang example.c -L./LibRhea/bin -I./LibRhea -lgc -lrhea -o example
+	clang example.c -Werror -Wno-parentheses-equality -L./LibRhea/bin -I./LibRhea -lgc -lrhea -o example
 
 clean:
 	make clean -C Rhea

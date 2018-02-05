@@ -1,9 +1,8 @@
-﻿using System;
-
-using Xunit;
+﻿using Xunit;
 
 using Rhea;
 using Rhea.Errors;
+using System;
 
 namespace Test
 {
@@ -31,41 +30,85 @@ namespace Test
 			");
 		}
 
+		// TODO: Add support for &&
+		/*
 		[Fact]
 		public void FizzBuzz()
 		{
 			new Compiler().Compile(@"
 				fun main() -> void {
-					for(var i in 0..100) {
-						if(i % 3 == 0) {
+					for (var i in 0..100) {
+						if (i % 3 == 0) {
 							# Fizz
 						}
-						if(i % 5 == 0) {
+						if (i % 5 == 0) {
 							# Buzz
 						}
-						if((i % 3 != 0) && (i % 5 != 0)) {
+						if ((i % 3 != 0) && (i % 5 != 0)) {
 							# i
 						}
 					}
 				}
 			");
 		}
+		*/
 
 		#endregion
 
 		#region Compiler Checks
 
-        [Fact]
-        public void VariableInitializationExpressionInvalidType()
-        {
-            Assert.Throws<TypeError>(() =>
-                new Compiler().Compile(@"
-                    fun main() -> void {
-                        var x = 1 + 1.5
-                    }
-                ")
-            );
-        }
+		[Fact]
+		public void FunctionCallParameterCount()
+		{
+			Assert.Throws<ArgumentError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						foo(1)
+					}
+
+					fun foo() -> void {
+					}
+				")
+			);
+
+			Assert.Throws<ArgumentError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						foo()
+					}
+
+					fun foo(a : int64) -> void {
+					}
+				")
+			);
+		}
+
+		[Fact]
+		public void FunctionCallParameterType()
+		{
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						foo(1)
+					}
+
+					fun foo(a : float64) -> void {
+					}
+				")
+			);
+		}
+
+		[Fact]
+		public void VariableInitializationExpressionInvalidType()
+		{
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x = 1 + 1.5
+					}
+				")
+			);
+		}
 
 		[Fact]
 		public void IfExpressionMustEvaluateToABoolean()
@@ -108,42 +151,200 @@ namespace Test
 			);
 		}
 
-        #endregion
+		#endregion
 
-        #region Syntax
+		#region Syntax
 
-        #region Assignent
+		#region Variable Initialization
 
-        [Fact]
-        public void AssignmentToUndefinedVariable()
-        {
-            Assert.Throws<UseOfUndefinedVariableError>(() =>
-                new Compiler().Compile(@"
-                    fun main() -> void {
-                        foo = 1
-                    }
-                ")
-            );
-        }
+		[Fact]
+		public void AssignToFunctionResultUseOfUndefinedVariableAsArgument()
+		{
+			Assert.Throws<UseOfUndefinedVariableError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var quux = foo(xxxxxxxxxxxx)
+					}
 
-        [Fact]
-        public void AssignmentTypesMustMatch()
-        {
-            Assert.Throws<TypeError>(() =>
-                new Compiler().Compile(@"
-                    fun main() -> void {
-                        var x : int64
-                        x = 3.14
-                    }
-                ")
-            );
-        }
+					fun foo(x : int64) -> int64 {
+						return x
+					}
+				")
+			);
+		}
 
-        #endregion
+		#endregion
 
-        #region Return Statements
+		#region Function Calls
 
-        [Fact]
+		[Fact]
+		public void UseOfUndefinedVariableAsArgument()
+		{
+			Assert.Throws<UseOfUndefinedVariableError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						foo(xxxxxxxxxxxx)
+					}
+
+					fun foo(x : int64) -> int64 {
+						return x
+					}
+				")
+			);
+		}
+
+		#endregion
+
+		#region Numbers
+
+		[Fact]
+		public void Integers()
+		{
+			new Compiler().Compile(@"
+				fun main() -> void {
+					var i32 : int32
+					var i64 : int64
+
+					i32 = int32(1)
+					i64 = 1
+
+					var foo = addi32(i32, int32(1))
+					var bar = addi64(i64, 1)
+				}
+
+				fun addi32(x : int32, y : int32) -> int32 {
+					return x + y
+				}
+
+				fun addi64(x : int64, y : int64) -> int64 {
+					return x + y
+				}
+			");
+		}
+
+		[Fact]
+		public void IntegerTypes()
+		{
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : int32
+						x = 1
+					}
+				")
+			);
+
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : int64
+						x = int32(1)
+					}
+				")
+			);
+
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : int64
+						var y : int32
+						var z = x + y
+					}
+				")
+			);
+		}
+
+		[Fact]
+		public void Floats()
+		{
+			new Compiler().Compile(@"
+				fun main() -> void {
+					var f32 : float32
+					var f64 : float64
+
+					f32 = float32(1.0)
+					f64 = 1.0
+
+					var foo = addf32(f32, float32(1.0))
+					var bar = addf64(f64, 1.0)
+				}
+
+				fun addf32(x : float32, y : float32) -> float32 {
+					return x + y
+				}
+
+				fun addf64(x : float64, y : float64) -> float64 {
+					return x + y
+				}
+			");
+		}
+
+		[Fact]
+		public void FloatTypes()
+		{
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : float32
+						x = 1.0
+					}
+				")
+			);
+
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : float64
+						x = float32(1)
+					}
+				")
+			);
+
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : float64
+						var y : float32
+						var z = x + y
+					}
+				")
+			);
+		}
+
+		#endregion
+
+		#region Assignent
+
+		[Fact]
+		public void AssignmentToUndefinedVariable()
+		{
+			Assert.Throws<UseOfUndefinedVariableError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						foo = 1
+					}
+				")
+			);
+		}
+
+		[Fact]
+		public void AssignmentTypesMustMatch()
+		{
+			Assert.Throws<TypeError>(() =>
+				new Compiler().Compile(@"
+					fun main() -> void {
+						var x : int64
+						x = 3.14
+					}
+				")
+			);
+		}
+
+		#endregion
+
+		#region Return Statements
+
+		[Fact]
 		public void ReturnVoid()
 		{
 			new Compiler().Compile(@"
@@ -224,11 +425,11 @@ namespace Test
 		public void ReturnStructMember()
 		{
 			new Compiler().Compile(@"
-                fun main() -> int64 {
-                    var quux : foo
-                    quux.bar = 0
-                    return quux.bar
-                }
+				fun main() -> int64 {
+					var quux : foo
+					quux.bar = 0
+					return quux.bar
+				}
 
 				struct foo {
 					bar : int64
@@ -241,11 +442,11 @@ namespace Test
 		{
 			Assert.Throws<TypeError>(() =>
 				new Compiler().Compile(@"
-                    fun main() -> int64 {
-                        var quux : foo
-                        quux.bar = 0
-                        return quux.bar
-                    }
+					fun main() -> int64 {
+						var quux : foo
+						quux.bar = 0
+						return quux.bar
+					}
 
 					struct foo {
 						bar : int32
@@ -258,11 +459,11 @@ namespace Test
 		public void ReturnMethodCall()
 		{
 			new Compiler().Compile(@"
-                fun main() -> int64 {
-                    var quux : foo
-                    quux.bar = 42
-                    return quux.bar()
-                }
+				fun main() -> int64 {
+					var quux : foo
+					quux.bar = 42
+					return quux.bar()
+				}
 
 				struct foo {
 					bar : int64
@@ -279,11 +480,11 @@ namespace Test
 		{
 			Assert.Throws<TypeError>(() =>
 				new Compiler().Compile(@"
-                    fun main() -> int64 {
-                        var quux : foo
-                        quux.bar = int32(42)
-                        return quux.bar()
-                    }
+					fun main() -> int64 {
+						var quux : foo
+						quux.bar = int32(42)
+						return quux.bar()
+					}
 
 					struct foo {
 						bar : int32
@@ -327,31 +528,31 @@ namespace Test
 			");
 		}
 
-        [Fact]
-        public void IfBoolean()
-        {
-            new Compiler().Compile(@"
-                fun main() -> void {
-                    if(true) {
-                    }
-                }
-            ");
-        }
+		[Fact]
+		public void IfBoolean()
+		{
+			new Compiler().Compile(@"
+				fun main() -> void {
+					if(true) {
+					}
+				}
+			");
+		}
 
-        [Fact]
-        public void IfFunctionThatReturnsBoolean()
-        {
-            new Compiler().Compile(@"
-                fun main() -> void {
-                    if(foo()) {
-                    }
-                }
+		[Fact]
+		public void IfFunctionThatReturnsBoolean()
+		{
+			new Compiler().Compile(@"
+				fun main() -> void {
+					if(foo()) {
+					}
+				}
 
-                fun foo() -> bool {
-                    return true
-                }
-            ");
-        }
+				fun foo() -> bool {
+					return true
+				}
+			");
+		}
 
 		#endregion
 

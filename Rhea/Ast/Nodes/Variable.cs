@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Rhea.Errors;
 
 namespace Rhea.Ast.Nodes
 {
@@ -17,7 +17,7 @@ namespace Rhea.Ast.Nodes
 				var variableDeclaration = ParentBlock.FindDeclaration(Name);
 
 				if(variableDeclaration == null)
-					throw new Exception($"Can't find declaration for {Name}");
+					throw new UseOfUndefinedVariableError($"Can't find declaration for {Name}");
 
 				return variableDeclaration.Type;
 			}

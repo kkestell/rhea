@@ -29,12 +29,12 @@
 
 		public static bool operator ==(Type t1, Type t2)
 		{
-			return t1.Pointer == t2.Pointer && t1.Name == t2.Name;
+			return t1?.Pointer == t2?.Pointer && t1?.Name == t2?.Name;
 		}
 
 		public static bool operator !=(Type t1, Type t2)
 		{
-			return t1.Pointer != t2.Pointer || t1.Name != t2.Name;
+			return t1?.Pointer != t2?.Pointer || t1?.Name != t2?.Name;
 		}
 
 		public override string ToString()

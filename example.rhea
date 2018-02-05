@@ -1,13 +1,6 @@
-fun fib(n : int64) -> int64 {
-  if (n == 0) {
-    return 0
-  }
-  if (n == 1) {
-    return 1
-  }
-  return fib(n - 2) + fib(n - 1)
+fun main() -> void {
+	foo(1)
 }
 
-fun main() -> int64 {
-  return fib(10)
+fun foo(a : float64) -> void {
 }

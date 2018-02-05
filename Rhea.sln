@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rhea", "Rhea\Rhea.csproj", "{9DDA6EBC-D97E-4673-8A05-4EC650BAC6C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "test\Test.csproj", "{242498BE-5855-4CD6-9999-FF84DC52CF67}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{242498BE-5855-4CD6-9999-FF84DC52CF67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,5 +19,14 @@ Global
 		{242498BE-5855-4CD6-9999-FF84DC52CF67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{242498BE-5855-4CD6-9999-FF84DC52CF67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{242498BE-5855-4CD6-9999-FF84DC52CF67}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 100
+		$1.NoTabsAfterNonTabs = True
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.scope = text/x-csharp
 	EndGlobalSection
 EndGlobal

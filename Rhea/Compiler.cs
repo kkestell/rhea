@@ -47,6 +47,20 @@ namespace Rhea
 
 		void CheckModule(Module module)
 		{
+			// All expression statements type can be inferred
+
+			/*
+			foreach (var f in module.Functions)
+			{
+				var expressions = FindStatements<ExpressionStatement>(f.Block).ToList();
+
+				foreach (var e in expressions) 
+				{
+					var type = e.Expression.InferredType;
+				}
+			}
+			*/
+
             // Variable initialization expression must have a valid type
 
             foreach (var f in module.Functions)

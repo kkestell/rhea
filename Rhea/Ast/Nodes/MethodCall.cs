@@ -25,7 +25,15 @@ namespace Rhea.Ast.Nodes
 
 		string StructName
 		{
-			get => Receiver.InferredType.Name;
+			get
+			{
+				var type = Receiver.InferredType;
+
+				if (type == null)
+					throw new Exception($"Cannot infer type of {Receiver}");
+
+				return type.Name;
+			}
 		}
 
 		string StructType
