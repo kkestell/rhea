@@ -103,7 +103,7 @@ var length = "Hello World".length()
 Function are declared using the `fun` keyword:
 
 ```
-fun foo(int32 : bar) -> int64 {
+fun foo(bar : int32) -> int64 {
   # ...
 }
 ```
